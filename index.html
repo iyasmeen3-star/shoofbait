@@ -123,7 +123,151 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
 .card{display:block;text-align:right;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--glass-solid);padding:0;box-shadow:0 2px 10px rgba(20,22,26,.06)}
 .card .ph{position:relative;aspect-ratio:16/10;background:#2A2E35 center/cover no-repeat}
 .card .ph .tag{position:absolute;top:10px;right:10px;background:rgba(22,26,32,.78);color:#fff;font-size:12px;font-weight:600;padding:4px 9px;border-radius:9px}
-.card .ph .tag.d{right:auto;left:10px;background:rgba(255,255,255,.9);color:#161A20}
+.card .ph .tag.d{top:auto;bottom:10px;background:rgba(255,255,255,.9);color:#161A20}
+.card{position:relative}
+.fav{position:absolute;z-index:2;top:8px;left:8px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.92);display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.fav svg{width:20px;height:20px;stroke:#161A20;stroke-width:2;fill:none}
+.fav[aria-pressed="true"] svg{fill:#E0245E;stroke:#E0245E}
+#favTop[aria-pressed="true"] svg{fill:#E0245E;stroke:#E0245E}
+#viewTabs{display:flex;gap:0;margin-top:14px;background:var(--chip);border-radius:12px;padding:3px;width:max-content}
+#viewTabs button{border:0;background:none;border-radius:10px;padding:8px 18px;font-size:14px;font-weight:600;color:var(--ink-2)}
+#viewTabs button[aria-pressed="true"]{background:var(--glass-solid);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+#listMap{height:min(62vh,560px);border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-top:4px;background:#E8E4DC}
+#mapCard .card{margin-top:10px;display:grid;grid-template-columns:120px 1fr}
+#mapCard .card .ph{aspect-ratio:auto;min-height:100%}
+#mapCard .fav{display:none}
+.pricePin{cursor:pointer}
+#mapNote{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.pricePin{background:var(--brand);color:var(--brand-ink);font:700 12.5px var(--font-body);padding:5px 9px;border-radius:10px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.25);transform:translate(-50%,-100%);display:inline-block;position:relative}
+.pricePin:after{content:"";position:absolute;bottom:-5px;left:50%;margin-left:-5px;border:5px solid transparent;border-bottom:0;border-top-color:var(--brand)}
+.leaflet-popup-content{font-family:var(--font-body);direction:rtl;text-align:right;margin:10px 12px}
+.leaflet-popup-content b{display:block;font-size:14px}
+.leaflet-popup-content button{margin-top:6px;border:0;background:var(--brand);color:var(--brand-ink);border-radius:9px;padding:6px 12px;font:600 13px var(--font-body)}
+#refLine{margin-top:4px;font-size:12.5px;color:var(--ink-2)}
+/* Leaflet 1.9.4 map styles (inlined: the preview only allows font stylesheets) */
+ .leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas, .leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer { position: absolute; left: 0; top: 0; }
+.leaflet-container { overflow: hidden; }
+.leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow { -webkit-user-select: none; -moz-user-select: none; user-select: none; -webkit-user-drag: none; }
+.leaflet-tile::selection { background: transparent; }
+.leaflet-safari .leaflet-tile { image-rendering: -webkit-optimize-contrast; }
+.leaflet-safari .leaflet-tile-container { width: 1600px; height: 1600px; -webkit-transform-origin: 0 0; }
+.leaflet-marker-icon, .leaflet-marker-shadow { display: block; }
+.leaflet-container .leaflet-overlay-pane svg { max-width: none !important; max-height: none !important; }
+.leaflet-container .leaflet-marker-pane img, .leaflet-container .leaflet-shadow-pane img, .leaflet-container .leaflet-tile-pane img, .leaflet-container img.leaflet-image-layer, .leaflet-container .leaflet-tile { max-width: none !important; max-height: none !important; width: auto; padding: 0; }
+.leaflet-container img.leaflet-tile { mix-blend-mode: plus-lighter; }
+.leaflet-container.leaflet-touch-zoom { -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; }
+.leaflet-container.leaflet-touch-drag { -ms-touch-action: pinch-zoom; touch-action: none; touch-action: pinch-zoom; }
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom { -ms-touch-action: none; touch-action: none; }
+.leaflet-container { -webkit-tap-highlight-color: transparent; }
+.leaflet-container a { -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4); }
+.leaflet-tile { filter: inherit; visibility: hidden; }
+.leaflet-tile-loaded { visibility: inherit; }
+.leaflet-zoom-box { width: 0; height: 0; -moz-box-sizing: border-box; box-sizing: border-box; z-index: 800; }
+.leaflet-overlay-pane svg { -moz-user-select: none; }
+.leaflet-pane { z-index: 400; }
+.leaflet-tile-pane { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane { z-index: 500; }
+.leaflet-marker-pane { z-index: 600; }
+.leaflet-tooltip-pane { z-index: 650; }
+.leaflet-popup-pane { z-index: 700; }
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg { z-index: 200; }
+.leaflet-vml-shape { width: 1px; height: 1px; }
+.lvml { behavior: url(#default#VML); display: inline-block; position: absolute; }
+.leaflet-control { position: relative; z-index: 800; pointer-events: visiblePainted; pointer-events: auto; }
+.leaflet-top, .leaflet-bottom { position: absolute; z-index: 1000; pointer-events: none; }
+.leaflet-top { top: 0; }
+.leaflet-right { right: 0; }
+.leaflet-bottom { bottom: 0; }
+.leaflet-left { left: 0; }
+.leaflet-control { float: left; clear: both; }
+.leaflet-right .leaflet-control { float: right; }
+.leaflet-top .leaflet-control { margin-top: 10px; }
+.leaflet-bottom .leaflet-control { margin-bottom: 10px; }
+.leaflet-left .leaflet-control { margin-left: 10px; }
+.leaflet-right .leaflet-control { margin-right: 10px; }
+.leaflet-fade-anim .leaflet-popup { opacity: 0; -webkit-transition: opacity 0.2s linear; -moz-transition: opacity 0.2s linear; transition: opacity 0.2s linear; }
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup { opacity: 1; }
+.leaflet-zoom-animated { -webkit-transform-origin: 0 0; -ms-transform-origin: 0 0; transform-origin: 0 0; }
+svg.leaflet-zoom-animated { will-change: transform; }
+.leaflet-zoom-anim .leaflet-zoom-animated { -webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1); -moz-transition: -moz-transform 0.25s cubic-bezier(0,0,0.25,1); transition: transform 0.25s cubic-bezier(0,0,0.25,1); }
+.leaflet-zoom-anim .leaflet-tile, .leaflet-pan-anim .leaflet-tile { -webkit-transition: none; -moz-transition: none; transition: none; }
+.leaflet-zoom-anim .leaflet-zoom-hide { visibility: hidden; }
+.leaflet-interactive { cursor: pointer; }
+.leaflet-grab { cursor: -webkit-grab; cursor: -moz-grab; cursor: grab; }
+.leaflet-crosshair, .leaflet-crosshair .leaflet-interactive { cursor: crosshair; }
+.leaflet-popup-pane, .leaflet-control { cursor: auto; }
+.leaflet-dragging .leaflet-grab, .leaflet-dragging .leaflet-grab .leaflet-interactive, .leaflet-dragging .leaflet-marker-draggable { cursor: move; cursor: -webkit-grabbing; cursor: -moz-grabbing; cursor: grabbing; }
+.leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-image-layer, .leaflet-pane > svg path, .leaflet-tile-container { pointer-events: none; }
+.leaflet-marker-icon.leaflet-interactive, .leaflet-image-layer.leaflet-interactive, .leaflet-pane > svg path.leaflet-interactive, svg.leaflet-image-layer.leaflet-interactive path { pointer-events: visiblePainted; pointer-events: auto; }
+.leaflet-container { background: #ddd; outline-offset: 1px; }
+.leaflet-container a { color: #0078A8; }
+.leaflet-zoom-box { border: 2px dotted #38f; background: rgba(255,255,255,0.5); }
+.leaflet-container { font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; font-size: 12px; font-size: 0.75rem; line-height: 1.5; }
+.leaflet-bar { box-shadow: 0 1px 5px rgba(0,0,0,0.65); border-radius: 4px; }
+.leaflet-bar a { background-color: #fff; border-bottom: 1px solid #ccc; width: 26px; height: 26px; line-height: 26px; display: block; text-align: center; text-decoration: none; color: black; }
+.leaflet-bar a, .leaflet-control-layers-toggle { background-position: 50% 50%; background-repeat: no-repeat; display: block; }
+.leaflet-bar a:hover, .leaflet-bar a:focus { background-color: #f4f4f4; }
+.leaflet-bar a:first-child { border-top-left-radius: 4px; border-top-right-radius: 4px; }
+.leaflet-bar a:last-child { border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; border-bottom: none; }
+.leaflet-bar a.leaflet-disabled { cursor: default; background-color: #f4f4f4; color: #bbb; }
+.leaflet-touch .leaflet-bar a { width: 30px; height: 30px; line-height: 30px; }
+.leaflet-touch .leaflet-bar a:first-child { border-top-left-radius: 2px; border-top-right-radius: 2px; }
+.leaflet-touch .leaflet-bar a:last-child { border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; }
+.leaflet-control-zoom-in, .leaflet-control-zoom-out { font: bold 18px 'Lucida Console', Monaco, monospace; text-indent: 1px; }
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out { font-size: 22px; }
+.leaflet-control-layers { box-shadow: 0 1px 5px rgba(0,0,0,0.4); background: #fff; border-radius: 5px; }
+.leaflet-touch .leaflet-control-layers-toggle { width: 44px; height: 44px; }
+.leaflet-control-layers .leaflet-control-layers-list, .leaflet-control-layers-expanded .leaflet-control-layers-toggle { display: none; }
+.leaflet-control-layers-expanded .leaflet-control-layers-list { display: block; position: relative; }
+.leaflet-control-layers-expanded { padding: 6px 10px 6px 6px; color: #333; background: #fff; }
+.leaflet-control-layers-scrollbar { overflow-y: scroll; overflow-x: hidden; padding-right: 5px; }
+.leaflet-control-layers-selector { margin-top: 2px; position: relative; top: 1px; }
+.leaflet-control-layers label { display: block; font-size: 13px; font-size: 1.08333em; }
+.leaflet-control-layers-separator { height: 0; border-top: 1px solid #ddd; margin: 5px -10px 5px -6px; }
+.leaflet-container .leaflet-control-attribution { background: #fff; background: rgba(255, 255, 255, 0.8); margin: 0; }
+.leaflet-control-attribution, .leaflet-control-scale-line { padding: 0 5px; color: #333; line-height: 1.4; }
+.leaflet-control-attribution a { text-decoration: none; }
+.leaflet-control-attribution a:hover, .leaflet-control-attribution a:focus { text-decoration: underline; }
+.leaflet-attribution-flag { display: inline !important; vertical-align: baseline !important; width: 1em; height: 0.6669em; }
+.leaflet-left .leaflet-control-scale { margin-left: 5px; }
+.leaflet-bottom .leaflet-control-scale { margin-bottom: 5px; }
+.leaflet-control-scale-line { border: 2px solid #777; border-top: none; line-height: 1.1; padding: 2px 5px 1px; white-space: nowrap; -moz-box-sizing: border-box; box-sizing: border-box; background: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px #fff; }
+.leaflet-control-scale-line:not(:first-child) { border-top: 2px solid #777; border-bottom: none; margin-top: -2px; }
+.leaflet-control-scale-line:not(:first-child):not(:last-child) { border-bottom: 2px solid #777; }
+.leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { box-shadow: none; }
+.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { border: 2px solid rgba(0,0,0,0.2); background-clip: padding-box; }
+.leaflet-popup { position: absolute; text-align: center; margin-bottom: 20px; }
+.leaflet-popup-content-wrapper { padding: 1px; text-align: left; border-radius: 12px; }
+.leaflet-popup-content { margin: 13px 24px 13px 20px; line-height: 1.3; font-size: 13px; font-size: 1.08333em; min-height: 1px; }
+.leaflet-popup-content p { margin: 17px 0; margin: 1.3em 0; }
+.leaflet-popup-tip-container { width: 40px; height: 20px; position: absolute; left: 50%; margin-top: -1px; margin-left: -20px; overflow: hidden; pointer-events: none; }
+.leaflet-popup-tip { width: 17px; height: 17px; padding: 1px; margin: -10px auto 0; pointer-events: auto; -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: white; color: #333; box-shadow: 0 3px 14px rgba(0,0,0,0.4); }
+.leaflet-container a.leaflet-popup-close-button { position: absolute; top: 0; right: 0; border: none; text-align: center; width: 24px; height: 24px; font: 16px/24px Tahoma, Verdana, sans-serif; color: #757575; text-decoration: none; background: transparent; }
+.leaflet-container a.leaflet-popup-close-button:hover, .leaflet-container a.leaflet-popup-close-button:focus { color: #585858; }
+.leaflet-popup-scrolled { overflow: auto; }
+.leaflet-oldie .leaflet-popup-content-wrapper { -ms-zoom: 1; }
+.leaflet-oldie .leaflet-popup-tip { width: 24px; margin: 0 auto; -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)"; filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678); }
+.leaflet-oldie .leaflet-control-zoom, .leaflet-oldie .leaflet-control-layers, .leaflet-oldie .leaflet-popup-content-wrapper, .leaflet-oldie .leaflet-popup-tip { border: 1px solid #999; }
+.leaflet-div-icon { background: #fff; border: 1px solid #666; }
+.leaflet-tooltip { position: absolute; padding: 6px; background-color: #fff; border: 1px solid #fff; border-radius: 3px; color: #222; white-space: nowrap; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none; box-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+.leaflet-tooltip.leaflet-interactive { cursor: pointer; pointer-events: auto; }
+.leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { position: absolute; pointer-events: none; border: 6px solid transparent; background: transparent; content: ""; }
+.leaflet-tooltip-bottom { margin-top: 6px; }
+.leaflet-tooltip-top { margin-top: -6px; }
+.leaflet-tooltip-bottom:before, .leaflet-tooltip-top:before { left: 50%; margin-left: -6px; }
+.leaflet-tooltip-top:before { bottom: 0; margin-bottom: -12px; border-top-color: #fff; }
+.leaflet-tooltip-bottom:before { top: 0; margin-top: -12px; margin-left: -6px; border-bottom-color: #fff; }
+.leaflet-tooltip-left { margin-left: -6px; }
+.leaflet-tooltip-right { margin-left: 6px; }
+.leaflet-tooltip-left:before, .leaflet-tooltip-right:before { top: 50%; margin-top: -6px; }
+.leaflet-tooltip-left:before { right: 0; margin-right: -12px; border-left-color: #fff; }
+.leaflet-tooltip-right:before { left: 0; margin-left: -12px; border-right-color: #fff; }
+@media print { .leaflet-control { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
 .card .bd{padding:12px 14px 14px}
 .card .pr{font-size:19px;font-weight:700;color:var(--brand)}
 .card .pr small{font-size:12.5px;color:var(--ink-2);font-weight:500;margin-inline-start:3px}
@@ -188,6 +332,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
   <button class="iconBtn glass" id="gyroBtn" aria-pressed="false" aria-label="حرّك الجوال للنظر حولك" hidden>
     <svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M3 9c-1 2-1 4 0 6M21 9c1 2 1 4 0 6"/></svg><span>حرّك الجوال</span>
   </button>
+  <button class="iconBtn glass" id="favTop" aria-pressed="false" aria-label="أضف للمفضلة"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9-8.6C1.6 8.4 3.4 5 6.6 5c2 0 3.4 1.2 5.4 3.2C14 6.2 15.4 5 17.4 5c3.2 0 5 3.4 3.6 6.4C19 15.6 12 20 12 20z"/></svg></button>
   <button class="iconBtn glass" id="shareBtn" aria-label="شارك">
     <svg viewBox="0 0 24 24"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg><span>شارك</span>
   </button>
@@ -212,7 +357,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
     <div id="wLoc"></div>
     <div id="wPrice"></div>
     <div id="wPpm"></div>
-    <div id="wAgent"></div>
+    <div id="wAgent"></div><div id="refLine" hidden></div>
     <div id="wFacts"></div>
     <div id="wDet"></div>
     <div id="wLinks"><button id="wInfo">تفاصيل العقار</button><a id="wMap" target="_blank" rel="noopener" hidden>الموقع على الخريطة</a></div>
@@ -265,9 +410,11 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
     </div>
   </div></div>
   <div id="listIn">
+    <div id="viewTabs" role="group" aria-label="طريقة العرض"><button data-v="list" aria-pressed="true">قائمة</button><button data-v="map" aria-pressed="false">خريطة</button></div>
     <div id="types" role="group" aria-label="نوع العقار"></div>
     <div id="count"></div>
     <div id="cards"></div>
+    <div id="mapWrap" hidden><div id="listMap"></div><div id="mapCard"></div><div id="mapNote"></div></div>
     <div id="empty" hidden>لا توجد عقارات بهذه الاختيارات حالياً</div>
   </div>
 </section>
@@ -286,6 +433,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
 <div id="loading"><div><div class="mark">شوف <em>بيت</em></div><p id="loadMsg">جارٍ تجهيز الجولة…</p></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
 </script>
@@ -296,6 +444,10 @@ const $=s=>document.querySelector(s);
 const fmt=n=>(Math.round(n*100)/100).toLocaleString('ar-EG',{maximumFractionDigits:2});
 const fmt1=n=>(Math.round(n*10)/10).toLocaleString('ar-EG',{maximumFractionDigits:1});
 const fmtP=n=>Number(n||0).toLocaleString('ar-EG');
+const favs={get(){try{return JSON.parse(localStorage.getItem('sb-favs')||'[]');}catch(e){return[];}},
+  has(id){return favs.get().includes(id);},
+  toggle(id){const f=favs.get(),i=f.indexOf(id);if(i<0)f.unshift(id);else f.splice(i,1);try{localStorage.setItem('sb-favs',JSON.stringify(f));}catch(e){}return i<0;}};
+const HEART='<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9-8.6C1.6 8.4 3.4 5 6.6 5c2 0 3.4 1.2 5.4 3.2C14 6.2 15.4 5 17.4 5c3.2 0 5 3.4 3.6 6.4C19 15.6 12 20 12 20z"/></svg>';
 const uniq=a=>[...new Set(a.filter(Boolean))].sort((x,y)=>x.localeCompare(y,'ar'));
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let toastT=null;
@@ -305,7 +457,9 @@ function fail(m){$('#loadMsg').textContent=m;throw new Error(m);}
 /* ============ load tour (+ optional property file for the plan and true sizes) ============ */
 /* which tour: ?tour=, #id, or the first one in tours/index.json (the list also fills the picker) */
 let TLIST=null;try{const r=await fetch('tours/index.json',{cache:'no-cache'});if(r.ok)TLIST=await r.json();}catch(e){}
-const TID=(new URLSearchParams(location.search).get('tour')||location.hash.slice(1)).trim();
+const ROUTE=decodeURIComponent(new URLSearchParams(location.search).get('tour')||location.hash.slice(1)).trim();
+/* a marketer's own link: #<listing>~<code>  (their code rides along in WhatsApp messages and shares) */
+const TID=ROUTE.split('~')[0],MCODE=(ROUTE.split('~')[1]||'').replace(/[^a-z0-9_-]/gi,'').slice(0,32);
 addEventListener('hashchange',()=>location.reload());
 const goList=()=>{if(new URLSearchParams(location.search).get('tour')){location.href=location.pathname;return;}location.hash='';location.reload();};
 if(!TID){await showListings();$('#loading').hidden=true;await new Promise(()=>{});} /* listings only: the tour code below never runs */
@@ -313,14 +467,14 @@ if(!/^[a-z0-9][a-z0-9_-]{0,63}$/.test(TID))fail('رابط الجولة غير ص
 
 /* ============ listings: city → area → neighbourhood, type, price ============ */
 async function showListings(){
-  const L=(Array.isArray(TLIST)?TLIST:[]).filter(o=>o&&o.id&&!o.hidden);
+  const L=(Array.isArray(TLIST)?TLIST:[]).filter(o=>o&&o.id&&!o.hidden),LS=L;
   let LOC=[];try{const r=await fetch('locations.json',{cache:'no-cache'});if(r.ok)LOC=(await r.json()).cities||[];}catch(e){}
   const cityOf=n=>LOC.find(c=>c.name===n);
   const areasOf=n=>{const c=cityOf(n);return uniq([...(c&&c.areas||[]).map(a=>a.name),...L.filter(o=>o.city===n).map(o=>o.area)]);};
   const distsOf=(n,a)=>{const c=cityOf(n);let d=[];if(c){if(c.districts)d=d.concat(c.districts);(c.areas||[]).forEach(x=>{if(!a||x.name===a)d=d.concat(x.districts||[]);});}
     return uniq([...d,...L.filter(o=>o.city===n&&(!a||o.area===a)).map(o=>o.district)]);};
   document.title='شوف بيت · عقارات بجولة 360°';$('#list').hidden=false;
-  const st={city:'',area:'',dist:'',type:'',sort:'new'};
+  const st={city:'',area:'',dist:'',type:'',sort:'new',view:'list'};
   try{Object.assign(st,JSON.parse(localStorage.getItem('sb-filters')||'{}'));}catch(e){}
 
   function fill(sel,vals,cur,all){sel.innerHTML=`<option value="">${all}</option>`+vals.map(v=>`<option${v===cur?' selected':''}>${esc(v)}</option>`).join('');sel.disabled=!vals.length;}
@@ -333,27 +487,55 @@ async function showListings(){
     const dists=st.city?distsOf(st.city,st.area):[];if(st.dist&&!dists.includes(st.dist))st.dist='';
     $('#fCity').innerHTML='';fill($('#fCity'),cities,st.city,'كل المدن');fill($('#fArea'),areas,st.area,'كل المناطق');fill($('#fDist'),dists,st.dist,'كل الأحياء');$('#fSort').value=st.sort;
     const inDist=inArea.filter(o=>!st.dist||o.district===st.dist);
-    const types=uniq(inDist.map(o=>o.type));if(st.type&&!types.includes(st.type))st.type='';
-    $('#types').innerHTML=['',...types].map(t=>`<button data-t="${esc(t)}" aria-pressed="${t===st.type}">${t?esc(t):'الكل'}</button>`).join('');
-    let rs=inDist.filter(o=>!st.type||o.type===st.type);
+    const types=uniq(inDist.map(o=>o.type));if(st.type&&st.type!=='♥'&&!types.includes(st.type))st.type='';
+    if(st.type==='♥'&&!favs.get().length)st.type='';
+    $('#types').innerHTML=['',...types].map(t=>`<button data-t="${esc(t)}" aria-pressed="${t===st.type}">${t?esc(t):'الكل'}</button>`).join('')
+      +(favs.get().length?`<button data-t="♥" aria-pressed="${st.type==='♥'}">♥ المفضلة (${fmtP(favs.get().length)})</button>`:'');
+    let rs=inDist.filter(o=>!st.type||(st.type==='♥'?favs.has(o.id):o.type===st.type));
     if(st.sort!=='new')rs=rs.slice().sort((a,b)=>((a.price||Infinity)-(b.price||Infinity))*(st.sort==='lo'?1:-1));
     $('#count').textContent=rs.length?fmtP(rs.length)+(rs.length===1?' عقار':' عقارات'):'';
     $('#empty').hidden=!!rs.length;
-    $('#empty').textContent=st.dist?`لا توجد عقارات في حي ${st.dist} حالياً`:st.area||st.city?`لا توجد عقارات في ${st.area||st.city} حالياً`:'لا توجد عقارات بهذه الاختيارات حالياً';
-    $('#cards').innerHTML=rs.map(o=>{const loc=[o.district&&'حي '+o.district,o.area,o.city].filter(Boolean).join('، ');
-      const ft=[o.bedrooms&&`<span><b>${fmtP(o.bedrooms)}</b> غرف نوم</span>`,o.bathrooms&&`<span><b>${fmtP(o.bathrooms)}</b> دورات مياه</span>`,o.size&&`<span><b>${fmtP(o.size)}</b> م²</span>`,o.spots&&`<span><b>${fmtP(o.spots)}</b> مكان بـ 360°</span>`].filter(Boolean).join('');
-      return`<button class="card" data-id="${esc(o.id)}"><div class="ph" style="background-image:url('${esc(o.cover||'')}');background-position:${Number(o.coverX??50)}% 50%">
-        ${o.type?`<span class="tag">${esc(o.type)}</span>`:''}${o.demo?'<span class="tag d">عرض تجريبي</span>':''}</div>
-        <div class="bd">${o.price?`<div class="pr">${fmtP(o.price)}<small>ريال</small></div>`:''}<div class="nm">${esc(o.name||o.id)}</div>
-        ${loc?`<div class="loc">${esc(loc)}</div>`:''}${o.note?`<div class="loc">${esc(o.note)}</div>`:''}${ft?`<div class="ft">${ft}</div>`:''}</div></button>`;}).join('');
+    $('#empty').textContent=st.type==='♥'?'ما في عقارات مفضلة في هذا الاختيار':st.dist?`لا توجد عقارات في حي ${st.dist} حالياً`:st.area||st.city?`لا توجد عقارات في ${st.area||st.city} حالياً`:'لا توجد عقارات بهذه الاختيارات حالياً';
+    $('#cards').innerHTML=rs.map(cardHTML).join('');
+    [...$('#viewTabs').children].forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===st.view)));
+    $('#cards').hidden=st.view==='map';$('#mapWrap').hidden=st.view!=='map';if(st.view==='map'){$('#empty').hidden=true;drawMap(rs);}
     try{localStorage.setItem('sb-filters',JSON.stringify(st));}catch(e){}
   }
+  function cardHTML(o){const loc=[o.district&&'حي '+o.district,o.area,o.city].filter(Boolean).join('، ');
+      const ft=[o.bedrooms&&`<span><b>${fmtP(o.bedrooms)}</b> غرف نوم</span>`,o.bathrooms&&`<span><b>${fmtP(o.bathrooms)}</b> دورات مياه</span>`,o.size&&`<span><b>${fmtP(o.size)}</b> م²</span>`,o.spots&&`<span><b>${fmtP(o.spots)}</b> مكان بـ 360°</span>`].filter(Boolean).join('');
+      return`<div class="card" role="button" tabindex="0" data-id="${esc(o.id)}"><button class="fav" data-fav="${esc(o.id)}" aria-pressed="${favs.has(o.id)}" aria-label="المفضلة">${HEART}</button><div class="ph" style="background-image:url('${esc(o.cover||'')}');background-position:${Number(o.coverX??50)}% 50%">
+        ${o.type?`<span class="tag">${esc(o.type)}</span>`:''}${o.demo?'<span class="tag d">عرض تجريبي</span>':''}</div>
+        <div class="bd">${o.price?`<div class="pr">${fmtP(o.price)}<small>ريال</small></div>`:''}<div class="nm">${esc(o.name||o.id)}</div>
+        ${loc?`<div class="loc">${esc(loc)}</div>`:''}${o.note?`<div class="loc">${esc(o.note)}</div>`:''}${ft?`<div class="ft">${ft}</div>`:''}</div></div>`;}
   $('#fCity').onchange=e=>{st.city=e.target.value;st.area='';st.dist='';render();};
   $('#fArea').onchange=e=>{st.area=e.target.value;st.dist='';render();};
   $('#fDist').onchange=e=>{st.dist=e.target.value;render();};
   $('#fSort').onchange=e=>{st.sort=e.target.value;render();};
   $('#types').onclick=e=>{const b=e.target.closest('button');if(!b)return;st.type=b.dataset.t;render();};
-  $('#cards').onclick=e=>{const c=e.target.closest('.card');if(!c)return;location.hash=c.dataset.id;location.reload();};
+  const open=id=>{location.hash=id;location.reload();};
+  $('#cards').onclick=e=>{const h=e.target.closest('.fav');if(h){e.stopPropagation();const on=favs.toggle(h.dataset.fav);h.setAttribute('aria-pressed',String(on));
+      toast(on?'أُضيف للمفضلة':'أُزيل من المفضلة',1600);render();return;}
+    const c=e.target.closest('.card');if(c)open(c.dataset.id);};
+  $('#cards').onkeydown=e=>{const c=e.target.closest('.card');if(c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();open(c.dataset.id);}};
+  $('#viewTabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;st.view=b.dataset.v;render();};
+  /* map view: price pins like عقار; listings need a "pin" in tours/index.json */
+  let map=null,layer=null;
+  function drawMap(rs){
+    const Lf=window.L;if(!Lf){$('#mapNote').textContent='تعذّر تحميل الخريطة.';return;}
+    if(!map){map=Lf.map('listMap',{zoomControl:true,attributionControl:true}).setView([24.7136,46.6753],11);
+      Lf.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);layer=Lf.layerGroup().addTo(map);
+
+      $('#mapCard').onclick=e=>{const c=e.target.closest('.card');if(c)open(c.dataset.id);};}
+    setTimeout(()=>map.invalidateSize(),50);layer.clearLayers();
+    const pinned=rs.filter(o=>o.pin&&o.pin.lat!=null),short=n=>n>=1e6?fmtP(Math.round(n/1e4)/100)+' م':n>=1e3?fmtP(Math.round(n/1e3))+' ألف':fmtP(n);
+    const showCard=o=>{$('#mapCard').innerHTML=cardHTML(o);$('#mapCard').scrollIntoView({block:'nearest',behavior:'smooth'});};
+    pinned.forEach(o=>{const m=Lf.marker([o.pin.lat,o.pin.lng],{icon:Lf.divIcon({className:'',html:`<span class="pricePin" data-pin="${esc(o.id)}">${o.price?esc(short(o.price)):esc(o.type||'عقار')}</span>`,iconSize:[0,0]})}).addTo(layer);
+      m.on('click',()=>showCard(o));});
+    $('#mapCard').innerHTML='';
+    const c=LOC.find(x=>x.name===st.city);
+    if(pinned.length)map.fitBounds(Lf.latLngBounds(pinned.map(o=>[o.pin.lat,o.pin.lng])).pad(0.4),{maxZoom:14});
+    else if(c&&c.center)map.setView(c.center,11);
+    $('#mapNote').textContent=(rs.length>pinned.length?`${fmtP(rs.length-pinned.length)} من العقارات بدون موقع على الخريطة بعد. `:'')+'خريطة © OpenStreetMap';}
   render();
 }
 if(location.protocol==='file:')fail('افتح الجولة عبر رابط، وليس بفتح الملف من الجهاز.');
@@ -473,12 +655,16 @@ cv.addEventListener('wheel',e=>{e.preventDefault();userZoomed=true;look.fov=Math
 /* ============ UI ============ */
 function dimsOf(p){const r=p.roomId!=null?roomById.get(p.roomId):null;
   return r?`<b>${fmt(r.w)} × ${fmt(r.l)} م</b> · ${fmt1(r.w*r.l)} م²${r.open?' · مساحة خارجية':''}`:(p.note?esc(p.note):'');}
+/* who gets the buyer's message: the marketer whose link was used (if they're on this listing), else the listing's agent */
+let refCode=MCODE;try{if(MCODE)localStorage.setItem('sb-ref-'+TID,MCODE);else refCode=localStorage.getItem('sb-ref-'+TID)||'';}catch(e){}
+const REF=(TOUR.marketers||[]).find(m=>m.code&&m.code.toLowerCase()===refCode.toLowerCase())||null;
+const CONTACT=REF&&REF.whatsapp?REF:TOUR.agent;
 /* WhatsApp to the marketer; the question names the room the buyer is looking at */
-const waNum=()=>TOUR.agent&&TOUR.agent.whatsapp?String(TOUR.agent.whatsapp).replace(/\D/g,''):'';
+const waNum=()=>CONTACT&&CONTACT.whatsapp?String(CONTACT.whatsapp).replace(/\D/g,''):'';
 function waLink(kind){const n=TOUR.name||'العقار';
   const msg=kind==='book'?`السلام عليكم، شفت جولة "${n}" على شوف بيت وأبي أحجز موعد معاينة. متى يناسبكم؟`
     :`السلام عليكم، شفت جولة "${n}" على شوف بيت${started&&current?` وعندي سؤال عن ${current.name}`:''}:`;
-  return'https://wa.me/'+waNum()+'?text='+encodeURIComponent(msg);}
+  return'https://wa.me/'+waNum()+'?text='+encodeURIComponent(msg+(REF?`\n(رمز المسوّق: ${REF.code})`:''));}
 function ui(){
   const p=current;if(!p)return;
   $('#capLevel').textContent=p.floor!=null&&P?levelName(p.floor):'';
@@ -504,7 +690,11 @@ function buildUI(){
     b.onclick=()=>go(p.id);$('#rail').appendChild(b);});
   /* agent: buyers contact the marketer, not us */
   const a=TOUR.agent;
-  $('#wAgent').innerHTML=a&&a.whatsapp?`للتواصل: <b>${esc(a.name||'المسوّق')}</b>`:'هنا يظهر اسم المسوّق ورقمه لكل عقار';
+  $('#wAgent').innerHTML=CONTACT&&CONTACT.whatsapp?`للتواصل: <b>${esc(CONTACT.name||'المسوّق')}</b>`:'هنا يظهر اسم المسوّق ورقمه لكل عقار';
+  /* favourite */
+  if(REF){$('#refLine').hidden=false;$('#refLine').textContent='تمت المشاركة عن طريق: '+(REF.name||REF.code);}
+  const fb=$('#favTop'),setFav=()=>fb.setAttribute('aria-pressed',String(favs.has(TID)));setFav();
+  fb.onclick=()=>{const on=favs.toggle(TID);setFav();toast(on?'أُضيف للمفضلة. تلقاه في صفحة العقارات':'أُزيل من المفضلة',2200);};
   [['#waBtn','ask'],['#waInfo','ask'],['#bookBtn','book']].forEach(([sel,kind])=>{const el=$(sel);
     el.onclick=e=>{if(!waNum()){e.preventDefault();toast('مثال: في الجولات الحقيقية يفتح هذا الزر واتساب المسوّق');return;}el.href=waLink(kind);};});
   /* property details (tour.json "details"), price per m², map pin */
@@ -515,7 +705,8 @@ function buildUI(){
   const rows=[['السعر',TOUR.price?fmtP(TOUR.price)+' ريال':''],['المساحة',size?fmtP(size)+' م²':''],['سعر المتر',TOUR.price&&size?'≈ '+fmtP(Math.round(TOUR.price/size))+' ريال':''],
     ['نوع العقار',D.type],['الدور',D.floor],['الواجهة',D.facade],['عرض الشارع',D.streetWidth?fmtP(D.streetWidth)+' م':''],
     ['عمر العقار',D.age!=null?(D.age===0?'جديد':fmtP(D.age)+(D.age>10?' سنة':' سنوات')):''],['المواقف',D.parking?fmtP(D.parking):''],
-    ['الموقع',TOUR.location],['مميزات',(D.extras||[]).join('، ')]].filter(r=>r[1]);
+    ['الموقع',TOUR.location],['مميزات',(D.extras||[]).join('، ')],
+    ['رخصة فال',(TOUR.license||{}).fal],['رقم ترخيص الإعلان',(TOUR.license||{}).ad]].filter(r=>r[1]);
   $('#infoList').innerHTML=rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
   $('#infoNote').textContent=TOUR.demo?'عرض تجريبي: بعض هذه البيانات توضيحية فقط.':'البيانات من المسوّق. تأكد منها عند المعاينة.';
   const pin=TOUR.pin,mapUrl=pin&&pin.lat!=null?`https://www.google.com/maps/search/?api=1&query=${pin.lat},${pin.lng}`:TOUR.mapsUrl||'';
@@ -527,8 +718,9 @@ function buildUI(){
 $('#wStart').onclick=()=>{const again=!!started||$('#wStart').dataset.seen;$('#wStart').dataset.seen='1';started=true;$('#welcome').hidden=true;$('#top').hidden=false;$('#dock').hidden=false;ui();
   let embedded=true;try{embedded=window.self!==window.top;}catch(e){}
   gyro.embedded=embedded;$('#gyroBtn').hidden=!('DeviceOrientationEvent' in window&&matchMedia('(pointer:coarse)').matches);
-  if(!again&&canMotion()){let seen=null;try{seen=localStorage.getItem('sb-motion');}catch(e){}
-    if(seen!=='later')setTimeout(askMotion,700);}
+  if(!again&&canMotion()&&!gyro.on){let seen=null;try{seen=localStorage.getItem('sb-motion');}catch(e){}
+    if(seen==='yes')gyroToggle(); /* already agreed: this tap lets the phone re-allow it without asking */
+    else if(seen!=='later')setTimeout(askMotion,700);}
   if(!again&&!(canMotion()))setTimeout(()=>toast('اسحب للنظر حولك، واضغط على العلامات للتنقل بين الغرف',3800),500);};
 
 /* plan sheet: true sizes from the plan, dots where a 360° photo exists */
@@ -557,7 +749,7 @@ $('#planBtn').onclick=()=>{planLevel=current&&current.floor!=null?current.floor:
 $('#planClose').onclick=()=>$('#plan').hidden=true;
 
 /* share: QR code + link */
-const shareUrl=TOUR.shareUrl||(location.origin+location.pathname+'#'+TID);
+const shareUrl=TOUR.shareUrl||(location.origin+location.pathname+'#'+TID+(REF?'~'+REF.code:''));
 let qrMade=false;
 $('#shareBtn').onclick=()=>{$('#share').hidden=false;$('#shareUrl').textContent=shareUrl;
   if(!qrMade&&window.QRCode){new QRCode($('#qr'),{text:shareUrl,width:440,height:440,colorDark:'#161A20',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});qrMade=true;}};

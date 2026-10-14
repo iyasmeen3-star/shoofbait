@@ -20,7 +20,11 @@
     "spots": 12,
     "demo": true,
     "cover": "tours/townhouse-f/1.jpg",
-    "coverX": 50
+    "coverX": 50,
+    "pin": {
+      "lat": 24.8105,
+      "lng": 46.6402
+    }
   },
   {
     "id": "real-photo-test",

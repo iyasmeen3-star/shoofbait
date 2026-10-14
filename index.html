@@ -296,6 +296,9 @@ svg.leaflet-zoom-animated { will-change: transform; }
 #qr{background:#fff;padding:14px;border-radius:16px}
 #qr img,#qr canvas{display:block;width:220px;height:220px}
 #shareLine{font-family:var(--font-display);font-size:24px}
+#embedBox{max-width:420px;width:100%;text-align:center}
+#embedBox summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--brand);padding:6px}
+#embedCode{width:100%;box-sizing:border-box;margin:8px 0;font:12px ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--chip);color:var(--ink);resize:none}
 #shareUrl{font-size:12.5px;color:var(--ink-2);word-break:break-all;max-width:320px;user-select:all}
 
 #mini{position:fixed;left:16px;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:19;width:118px;height:118px;border-radius:16px;padding:0;overflow:hidden}
@@ -396,6 +399,10 @@ svg.leaflet-zoom-animated { will-change: transform; }
     <div id="shareUrl"></div>
     <button class="btn primary" id="copyBtn" style="flex:0 0 auto;min-width:220px">انسخ الرابط</button>
     <div class="note">ضع رمز QR في صور الإعلان على عقار وحراج، أو على لوحة "للبيع"</div>
+    <details id="embedBox"><summary>كود التضمين لموقعك</summary>
+      <textarea id="embedCode" readonly rows="4" dir="ltr"></textarea>
+      <button class="btn" id="embedCopy" style="flex:0 0 auto;min-width:220px">انسخ كود التضمين</button>
+    </details>
   </div>
 </section>
 
@@ -716,7 +723,8 @@ function buildUI(){
   $('#wMore').hidden=!(Array.isArray(TLIST)&&TLIST.length>1);$('#wMore').onclick=goList;
 }
 $('#wStart').onclick=()=>{const again=!!started||$('#wStart').dataset.seen;$('#wStart').dataset.seen='1';started=true;$('#welcome').hidden=true;$('#top').hidden=false;$('#dock').hidden=false;ui();
-  let embedded=true;try{embedded=window.self!==window.top;}catch(e){}
+  /* inside the Claude preview the host doesn't pass motion sensors; sites that embed us with allow="gyroscope" do */
+  let embedded=false;try{const ao=location.ancestorOrigins?[...location.ancestorOrigins]:[];embedded=window.self!==window.top&&(ao.some(o=>/claude/.test(o))||/claude/.test(document.referrer)||/claude/.test(location.hostname));}catch(e){}
   gyro.embedded=embedded;$('#gyroBtn').hidden=!('DeviceOrientationEvent' in window&&matchMedia('(pointer:coarse)').matches);
   if(!again&&canMotion()&&!gyro.on){let seen=null;try{seen=localStorage.getItem('sb-motion');}catch(e){}
     if(seen==='yes')gyroToggle(); /* already agreed: this tap lets the phone re-allow it without asking */
@@ -753,6 +761,9 @@ const shareUrl=TOUR.shareUrl||(location.origin+location.pathname+'#'+TID+(REF?'~
 let qrMade=false;
 $('#shareBtn').onclick=()=>{$('#share').hidden=false;$('#shareUrl').textContent=shareUrl;
   if(!qrMade&&window.QRCode){new QRCode($('#qr'),{text:shareUrl,width:440,height:440,colorDark:'#161A20',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});qrMade=true;}};
+/* embed: allow= lets phone-motion looking work inside the iframe */
+$('#embedCode').value=`<iframe src="${shareUrl}" style="width:100%;aspect-ratio:4/3;border:0;border-radius:12px" allow="accelerometer; gyroscope; fullscreen" allowfullscreen loading="lazy" title="${esc(TOUR.name||'جولة 360°')}"></iframe>`;
+$('#embedCopy').onclick=()=>{const t=$('#embedCode');t.select();try{navigator.clipboard.writeText(t.value).then(()=>toast('تم نسخ كود التضمين'),()=>toast('حدّد الكود وانسخه'));}catch(e){toast('حدّد الكود وانسخه');}};
 $('#shareClose').onclick=()=>$('#share').hidden=true;
 $('#copyBtn').onclick=()=>{const done=()=>toast('تم نسخ الرابط');
   try{navigator.clipboard.writeText(shareUrl).then(done,()=>{getSelection().selectAllChildren($('#shareUrl'));toast('حدّد الرابط وانسخه');});}

@@ -1,0 +1,53 @@
+# Copied into the public site repo as .github/workflows/build-tours.yml by build-site.py.
+# n8n (or anyone) uploads a submission to incoming/<anything>/ : listing.json + 360° photos.
+# This builds the tour with make-tour.py, removes the submission, commits, and asks Pages to republish.
+name: Build tours from incoming photos
+
+on:
+  push:
+    branches: [main]
+    paths: ['incoming/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: build-tours
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow==11.0.0
+      - name: Build each submission
+        run: |
+          shopt -s nullglob
+          built=""
+          for d in incoming/*/; do
+            if [ -f "$d/listing.json" ]; then
+              id=$(python3 tools/make-tour.py "$d" tours | sed -n 's/^tour ready: \([^ ]*\).*/\1/p')
+              built="$built $id"
+              git rm -rq "$d"
+            fi
+          done
+          echo "BUILT=$built" >> "$GITHUB_ENV"
+      - name: Commit the new tours
+        if: env.BUILT != ''
+        run: |
+          git config user.name "shoofbait-bot"
+          git config user.email "shoofbait-bot@users.noreply.github.com"
+          git add -A tours incoming
+          git commit -m "New tour(s):${BUILT}"
+          git push
+      - name: Republish the site
+        if: env.BUILT != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages will pick it up on the next push"

@@ -28,14 +28,6 @@
 :root[data-theme="dark"]{
   --glass:rgba(24,27,32,.9);--glass-solid:#1E2228;--ink:#F2EFEA;--ink-2:#A9AEB6;--line:rgba(255,255,255,.12);
   --brand:#3DBB82;--brand-ink:#04140C;--chip:#2A2E35;--wa:#2FA864;--shadow:0 10px 30px rgba(0,0,0,.5);color-scheme:dark}
-/* brand colour options (team is choosing; picker on the listings page) */
-:root[data-brand="blue"]{--brand:#1F4FD8;--brand-ink:#FFFFFF}
-:root[data-brand="clay"]{--brand:#B4471C;--brand-ink:#FFFFFF}
-@media (prefers-color-scheme: dark){
-  :root[data-brand="blue"]:not([data-theme="light"]){--brand:#7598FF;--brand-ink:#08112C}
-  :root[data-brand="clay"]:not([data-theme="light"]){--brand:#E8875C;--brand-ink:#1E0B03}}
-:root[data-theme="dark"][data-brand="blue"]{--brand:#7598FF;--brand-ink:#08112C}
-:root[data-theme="dark"][data-brand="clay"]{--brand:#E8875C;--brand-ink:#1E0B03}
 [hidden]{display:none!important}
 html,body{height:100%;overflow:hidden}
 body{margin:0;background:var(--stage);color:var(--ink);font-family:var(--font-body);font-size:15px;direction:rtl;
@@ -79,6 +71,21 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
 #wAgent b{color:var(--ink)}
 .waBtn{display:flex;align-items:center;gap:7px;background:var(--wa);color:#fff;border:0;border-radius:12px;padding:11px 15px;font-weight:700;font-size:14.5px;text-decoration:none;white-space:nowrap}
 .waBtn svg{width:18px;height:18px;fill:currentColor}
+#wPpm{font-size:13px;color:var(--ink-2);margin-top:2px}
+#wDet{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+#wDet span{background:var(--chip);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:600}
+#wLinks{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#wLinks button,#wLinks a{flex:1;min-width:130px;text-align:center;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--glass-solid);border-radius:12px;padding:10px 12px;font-size:14px;font-weight:600}
+#info{z-index:41}
+#infoBody{flex:1;overflow-y:auto;margin-top:12px}
+#infoBody dl{display:grid;grid-template-columns:auto 1fr;gap:0;margin:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+#infoBody dt,#infoBody dd{margin:0;padding:12px 14px;border-bottom:1px solid var(--line);font-size:14.5px}
+#infoBody dt{color:var(--ink-2);background:var(--chip)}
+#infoBody dd{font-weight:600}
+#infoBody dl>:nth-last-child(-n+2){border-bottom:0}
+#infoActs{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+#infoActs a,#infoActs button{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-size:15.5px}
+.waBig{background:transparent!important;color:var(--wa)!important;border:1.5px solid var(--wa)!important}
 
 #welcome{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;justify-content:flex-end;
   padding:0 16px calc(env(safe-area-inset-bottom,0px) + 18px);background:linear-gradient(to top,rgba(10,12,16,.7),rgba(10,12,16,0) 60%)}
@@ -108,9 +115,6 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
 #filters label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;min-width:0}
 #filters select{width:100%;min-width:0;border:0;background:var(--glass-solid);color:var(--ink);border-radius:12px;padding:11px 10px;font:inherit;font-size:14.5px}
 #filters select:disabled{opacity:.6}
-#brandPick{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:28px;font-size:12.5px;color:var(--ink-2)}
-#brandPick button{width:30px;height:30px;border-radius:50%;border:3px solid var(--glass-solid);box-shadow:0 0 0 1px var(--line)}
-#brandPick button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
 #types{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 #types button{border:1px solid var(--line);background:var(--chip);border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600}
 #types button[aria-pressed="true"]{background:var(--ink);color:var(--glass-solid);border-color:var(--ink)}
@@ -171,11 +175,10 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
 #loading .mark em{font-style:normal;color:var(--brand)}
 #loading p{opacity:.75;margin:8px 0 0}
 @media (max-width:520px){#wFacts{grid-template-columns:repeat(2,1fr)}#filters{grid-template-columns:repeat(2,minmax(0,1fr))}#backBtn span{display:none}#mini{width:96px;height:96px}#gyroBtn span{display:none}#capName{font-size:18px}#topTitle{display:none}
-  .waBtn span,#planBtn span{display:none}.waBtn{padding:11px}}
+  .waBtn span,#planBtn span,#infoBtn span{display:none}.waBtn{padding:11px}}
 @media (prefers-reduced-motion: reduce){#fade,#toast{transition:none}}
 </style>
 
-<script>try{const b=localStorage.getItem('sb-brand');if(b&&b!=='green')document.documentElement.dataset.brand=b;}catch(e){}</script>
 <div id="stage" aria-label="صورة 360 درجة للعقار"></div>
 
 <header id="top" hidden>
@@ -196,6 +199,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
   <section id="caption" class="glass" aria-live="polite">
     <div id="capText"><div id="capLevel"></div><div id="capName"></div><div id="capDims"></div></div>
     <a class="waBtn" id="waBtn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg><span>واتساب</span></a>
+    <button class="iconBtn" id="infoBtn" aria-label="تفاصيل العقار"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg><span>التفاصيل</span></button>
     <button class="iconBtn" id="planBtn" hidden><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 12h9V3M12 12v9"/></svg><span>المخطط</span></button>
   </section>
   <div id="rail" role="list" aria-label="الغرف"></div>
@@ -207,8 +211,11 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
     <h1 id="wName"></h1>
     <div id="wLoc"></div>
     <div id="wPrice"></div>
+    <div id="wPpm"></div>
     <div id="wAgent"></div>
     <div id="wFacts"></div>
+    <div id="wDet"></div>
+    <div id="wLinks"><button id="wInfo">تفاصيل العقار</button><a id="wMap" target="_blank" rel="noopener" hidden>الموقع على الخريطة</a></div>
     <div id="wBtns"><button class="btn primary" id="wStart">ابدأ الجولة</button></div>
     <button id="wMore" hidden>تصفّح <b>كل العقارات</b></button>
   </div>
@@ -220,6 +227,19 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
   <div id="planLevels"></div>
   <div id="planWrap"><canvas id="planCv"></canvas></div>
   <div class="note">المقاسات من المخطط المعماري · اضغط على غرفة فيها نقطة للانتقال إليها</div>
+</section>
+
+<section id="info" class="sheet" hidden aria-label="تفاصيل العقار">
+  <div class="sheetHead"><h2>تفاصيل العقار</h2>
+    <button class="round" id="infoClose" aria-label="إغلاق"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div id="infoBody"><dl id="infoList"></dl>
+    <div id="infoActs">
+      <a class="btn primary" id="bookBtn" target="_blank" rel="noopener">احجز معاينة</a>
+      <a class="btn waBig" id="waInfo" target="_blank" rel="noopener">اسأل المسوّق على واتساب</a>
+      <a class="btn" id="mapBtn" target="_blank" rel="noopener" hidden>الموقع على الخريطة</a>
+    </div>
+    <p class="note" id="infoNote"></p>
+  </div>
 </section>
 
 <section id="share" class="sheet" hidden aria-label="شارك">
@@ -249,10 +269,6 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offs
     <div id="count"></div>
     <div id="cards"></div>
     <div id="empty" hidden>لا توجد عقارات بهذه الاختيارات حالياً</div>
-    <div id="brandPick">لون الهوية (للتجربة):
-      <button data-b="green" style="background:#0B7A4B" aria-label="أخضر"></button>
-      <button data-b="blue" style="background:#1F4FD8" aria-label="أزرق"></button>
-      <button data-b="clay" style="background:#B4471C" aria-label="طيني"></button></div>
   </div>
 </section>
 
@@ -303,10 +319,6 @@ async function showListings(){
   const areasOf=n=>{const c=cityOf(n);return uniq([...(c&&c.areas||[]).map(a=>a.name),...L.filter(o=>o.city===n).map(o=>o.area)]);};
   const distsOf=(n,a)=>{const c=cityOf(n);let d=[];if(c){if(c.districts)d=d.concat(c.districts);(c.areas||[]).forEach(x=>{if(!a||x.name===a)d=d.concat(x.districts||[]);});}
     return uniq([...d,...L.filter(o=>o.city===n&&(!a||o.area===a)).map(o=>o.district)]);};
-  const pb=$('#brandPick');const curB=()=>document.documentElement.dataset.brand||'green';
-  const markB=()=>[...pb.querySelectorAll('button')].forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.b===curB())));markB();
-  pb.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.b==='green')delete document.documentElement.dataset.brand;else document.documentElement.dataset.brand=b.dataset.b;
-    try{localStorage.setItem('sb-brand',b.dataset.b);}catch(e){}markB();};
   document.title='شوف بيت · عقارات بجولة 360°';$('#list').hidden=false;
   const st={city:'',area:'',dist:'',type:'',sort:'new'};
   try{Object.assign(st,JSON.parse(localStorage.getItem('sb-filters')||'{}'));}catch(e){}
@@ -372,9 +384,13 @@ const panoMat=new THREE.ShaderMaterial({uniforms:{map:{value:null}},side:THREE.B
     }`});
 scene.add(new THREE.Mesh(new THREE.SphereGeometry(50,64,40),panoMat));
 
-const loader=new THREE.TextureLoader();const texCache=new Map();
-function loadTex(p){if(!texCache.has(p.id))texCache.set(p.id,new Promise((res,rej)=>loader.load(p.image,t=>{t.colorSpace=THREE.SRGBColorSpace;
-  t.generateMipmaps=false;t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter;res(t);},undefined,rej)));return texCache.get(p.id);}
+const loader=new THREE.TextureLoader();const texCache=new Map(),texReady=new Map();
+/* kind: 'full' (the photo) or 'prev' (small preview from optimize-photos.py, shown first) */
+function loadTex(p,kind='full'){const key=p.id+'|'+kind,url=kind==='prev'?p.preview:p.image;
+  if(!texCache.has(key))texCache.set(key,new Promise((res,rej)=>loader.load(url,t=>{t.colorSpace=THREE.SRGBColorSpace;
+    t.generateMipmaps=false;t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter;texReady.set(key,t);res(t);},undefined,rej)));
+  return texCache.get(key);}
+function preload(p){if(p.preview)loadTex(p,'prev').catch(()=>{});loadTex(p).catch(()=>{});}
 
 /* hotspots: round markers on the floor (or a stairs marker), with the room name */
 const hotGroup=new THREE.Group();scene.add(hotGroup);
@@ -414,19 +430,23 @@ async function go(id,{instant=false}={}){
   const p=panoById.get(String(id));if(!p||busy)return;busy=true;
   const f=$('#fade'),normal=userZoomed?look.fov:fitFov();
   const fwd=current&&!instant?(current.links||[]).find(l=>String(l.to)===String(p.id)):null;
-  const tex=loadTex(p);
+  const prev=p.preview?loadTex(p,'prev'):null;if(prev)prev.catch(()=>{});const full=loadTex(p);full.catch(()=>{});
   if(!instant){
     /* walk in: turn to the doorway and move towards it, then fade into the next room */
     if(fwd){f.style.transition='opacity .22s ease';setTimeout(()=>f.style.opacity='1',300);await tweenLook({yaw:fwd.yaw,pitch:-4,fov:Math.max(38,normal*0.5)},520);}
     else{f.style.opacity='1';await new Promise(r=>setTimeout(r,260));}}
-  try{panoMat.uniforms.map.value=await tex;}catch(e){toast('تعذّر تحميل صورة هذه الغرفة');f.style.opacity='0';look.fov=normal;busy=false;return;}
+  let shown=texReady.get(p.id+'|full');
+  if(!shown){try{shown=prev?await prev:await full;}catch(e){try{shown=await full;}catch(e2){}}}
+  if(!shown){toast('تعذّر تحميل صورة هذه الغرفة');f.style.opacity='0';look.fov=normal;busy=false;return;}
+  panoMat.uniforms.map.value=shown;
+  if(!texReady.has(p.id+'|full'))full.then(t=>{if(current===p)panoMat.uniforms.map.value=t;},()=>{});
   /* keep facing the direction we walked in, unless the room sets its own start */
   /* arriving: use the link's "face" if set; keep the walking direction only when all photos face the
      same way (tour.aligned, e.g. renders from our 3D model); otherwise the room's own start view */
   const back=current&&!instant?(current.links||[]).find(l=>String(l.to)===String(p.id)):null;
   look.yaw=back&&back.face!=null?back.face:back&&TOUR.aligned?back.yaw:(p.yaw||0);
   look.pitch=-5;current=p;buildHotspots(p);ui();gyroRebase();
-  (p.links||[]).forEach(l=>{const t=panoById.get(String(l.to));if(t)loadTex(t).catch(()=>{});});
+  (p.links||[]).forEach(l=>{const t=panoById.get(String(l.to));if(t)preload(t);});
   /* arrive a little zoomed in and settle back to the wide view: feels like stepping in */
   if(!instant&&!REDUCED){camera.fov=look.fov=normal*0.8;camera.updateProjectionMatrix();requestAnimationFrame(()=>{look.fov=normal;});}else look.fov=normal;
   requestAnimationFrame(()=>{f.style.transition='';f.style.opacity='0';});busy=false;
@@ -453,6 +473,12 @@ cv.addEventListener('wheel',e=>{e.preventDefault();userZoomed=true;look.fov=Math
 /* ============ UI ============ */
 function dimsOf(p){const r=p.roomId!=null?roomById.get(p.roomId):null;
   return r?`<b>${fmt(r.w)} × ${fmt(r.l)} م</b> · ${fmt1(r.w*r.l)} م²${r.open?' · مساحة خارجية':''}`:(p.note?esc(p.note):'');}
+/* WhatsApp to the marketer; the question names the room the buyer is looking at */
+const waNum=()=>TOUR.agent&&TOUR.agent.whatsapp?String(TOUR.agent.whatsapp).replace(/\D/g,''):'';
+function waLink(kind){const n=TOUR.name||'العقار';
+  const msg=kind==='book'?`السلام عليكم، شفت جولة "${n}" على شوف بيت وأبي أحجز موعد معاينة. متى يناسبكم؟`
+    :`السلام عليكم، شفت جولة "${n}" على شوف بيت${started&&current?` وعندي سؤال عن ${current.name}`:''}:`;
+  return'https://wa.me/'+waNum()+'?text='+encodeURIComponent(msg);}
 function ui(){
   const p=current;if(!p)return;
   $('#capLevel').textContent=p.floor!=null&&P?levelName(p.floor):'';
@@ -478,12 +504,23 @@ function buildUI(){
     b.onclick=()=>go(p.id);$('#rail').appendChild(b);});
   /* agent: buyers contact the marketer, not us */
   const a=TOUR.agent;
-  if(a&&a.whatsapp){const num=String(a.whatsapp).replace(/\D/g,'');
-    const msg=`السلام عليكم، شفت جولة "${TOUR.name}" على شوف بيت وأبي أستفسر`;
-    $('#wAgent').innerHTML=`للتواصل: <b>${esc(a.name||'المسوّق')}</b>`;
-    $('#waBtn').href='https://wa.me/'+num+'?text='+encodeURIComponent(msg);}
-  else{$('#wAgent').textContent='هنا يظهر اسم المسوّق ورقمه لكل عقار';
-    $('#waBtn').removeAttribute('href');$('#waBtn').onclick=e=>{e.preventDefault();toast('مثال: في الجولات الحقيقية يفتح هذا الزر واتساب المسوّق');};}
+  $('#wAgent').innerHTML=a&&a.whatsapp?`للتواصل: <b>${esc(a.name||'المسوّق')}</b>`:'هنا يظهر اسم المسوّق ورقمه لكل عقار';
+  [['#waBtn','ask'],['#waInfo','ask'],['#bookBtn','book']].forEach(([sel,kind])=>{const el=$(sel);
+    el.onclick=e=>{if(!waNum()){e.preventDefault();toast('مثال: في الجولات الحقيقية يفتح هذا الزر واتساب المسوّق');return;}el.href=waLink(kind);};});
+  /* property details (tour.json "details"), price per m², map pin */
+  const D=TOUR.details||{},size=TOUR.area||D.size;
+  $('#wPpm').textContent=TOUR.price&&size?`≈ ${fmtP(Math.round(TOUR.price/size))} ريال للمتر`:'';
+  const chips=[D.facade&&'واجهة '+D.facade,D.streetWidth&&'شارع '+fmtP(D.streetWidth)+' م',D.age!=null&&(D.age===0?'جديد':'عمر العقار '+fmtP(D.age)+(D.age>10?' سنة':' سنوات')),D.floor&&'الدور '+D.floor,D.parking&&(D.parking===1?'موقف':fmtP(D.parking)+' مواقف')].filter(Boolean);
+  $('#wDet').innerHTML=chips.map(c=>`<span>${esc(c)}</span>`).join('');
+  const rows=[['السعر',TOUR.price?fmtP(TOUR.price)+' ريال':''],['المساحة',size?fmtP(size)+' م²':''],['سعر المتر',TOUR.price&&size?'≈ '+fmtP(Math.round(TOUR.price/size))+' ريال':''],
+    ['نوع العقار',D.type],['الدور',D.floor],['الواجهة',D.facade],['عرض الشارع',D.streetWidth?fmtP(D.streetWidth)+' م':''],
+    ['عمر العقار',D.age!=null?(D.age===0?'جديد':fmtP(D.age)+(D.age>10?' سنة':' سنوات')):''],['المواقف',D.parking?fmtP(D.parking):''],
+    ['الموقع',TOUR.location],['مميزات',(D.extras||[]).join('، ')]].filter(r=>r[1]);
+  $('#infoList').innerHTML=rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
+  $('#infoNote').textContent=TOUR.demo?'عرض تجريبي: بعض هذه البيانات توضيحية فقط.':'البيانات من المسوّق. تأكد منها عند المعاينة.';
+  const pin=TOUR.pin,mapUrl=pin&&pin.lat!=null?`https://www.google.com/maps/search/?api=1&query=${pin.lat},${pin.lng}`:TOUR.mapsUrl||'';
+  ['#wMap','#mapBtn'].forEach(sel=>{$(sel).hidden=!mapUrl;if(mapUrl)$(sel).href=mapUrl;});
+  $('#wInfo').onclick=$('#infoBtn').onclick=()=>{$('#info').hidden=false;};$('#infoClose').onclick=()=>$('#info').hidden=true;
   $('#planBtn').hidden=!P;
   $('#wMore').hidden=!(Array.isArray(TLIST)&&TLIST.length>1);$('#wMore').onclick=goList;
 }

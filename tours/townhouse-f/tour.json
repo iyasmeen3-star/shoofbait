@@ -4,7 +4,7 @@
  "price": 1450000,
  "property": "townhouse-f",
  "demo": true,
- "note": "Demo: 360° images rendered from our 3D model of the townhouse, not real photos.",
+ "note": "Demo: 360° images rendered from our 3D model of the townhouse, not real photos. Details (facade, street width, age) are illustrative for the demo.",
  "agent": null,
  "start": "street",
  "panos": [
@@ -25,7 +25,8 @@
      "yaw": 161.7,
      "pitch": -16
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/street-s.jpg"
   },
   {
    "id": "1",
@@ -55,7 +56,8 @@
      "yaw": 153.8,
      "pitch": -16
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/1-s.jpg"
   },
   {
    "id": "2",
@@ -86,7 +88,8 @@
      "pitch": 6,
      "label": "الدور الأول ⬆"
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/2-s.jpg"
   },
   {
    "id": "4",
@@ -116,7 +119,8 @@
      "yaw": -126.0,
      "pitch": -16
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/4-s.jpg"
   },
   {
    "id": "5",
@@ -141,7 +145,8 @@
      "yaw": -26.2,
      "pitch": -16
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/5-s.jpg"
   },
   {
    "id": "11",
@@ -166,7 +171,8 @@
      "yaw": 87.2,
      "pitch": -16
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/11-s.jpg"
   },
   {
    "id": "12",
@@ -191,7 +197,8 @@
      "yaw": 17.6,
      "pitch": -16
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/12-s.jpg"
   },
   {
    "id": "13",
@@ -231,7 +238,8 @@
      "yaw": 153.4,
      "pitch": -16
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/13-s.jpg"
   },
   {
    "id": "14",
@@ -262,7 +270,8 @@
      "pitch": -20,
      "label": "الدور الأرضي ⬇"
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/14-s.jpg"
   },
   {
    "id": "16",
@@ -287,7 +296,8 @@
      "yaw": -134.6,
      "pitch": -16
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/16-s.jpg"
   },
   {
    "id": "17",
@@ -312,7 +322,8 @@
      "yaw": 0.6,
      "pitch": -16
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/17-s.jpg"
   },
   {
    "id": "18",
@@ -337,8 +348,23 @@
      "yaw": -26.6,
      "pitch": -16
     }
-   ]
+   ],
+   "preview": "tours/townhouse-f/18-s.jpg"
   }
  ],
- "aligned": true
+ "aligned": true,
+ "details": {
+  "type": "تاون هاوس (دورين وسطح)",
+  "facade": "شمالية",
+  "streetWidth": 15,
+  "age": 0,
+  "parking": 1,
+  "extras": [
+   "مجلس",
+   "صالة عائلية",
+   "غرفة ملابس",
+   "دورة مياه ضيوف",
+   "سطح"
+  ]
+ }
 }

@@ -18,7 +18,8 @@
      "pitch": -12,
      "label": "ادخل"
     }
-   ]
+   ],
+   "preview": "tours/sample-flat/street-s.jpg"
   },
   {
    "id": "living",
@@ -46,7 +47,8 @@
     }
    ],
    "mapRoom": 1,
-   "heading": 0
+   "heading": 0,
+   "preview": "tours/sample-flat/living-s.jpg"
   },
   {
    "id": "bedroom",
@@ -68,7 +70,8 @@
     }
    ],
    "mapRoom": 2,
-   "heading": -8.7
+   "heading": -8.7,
+   "preview": "tours/sample-flat/bedroom-s.jpg"
   },
   {
    "id": "bath",
@@ -84,7 +87,8 @@
     }
    ],
    "mapRoom": 3,
-   "heading": -150
+   "heading": -150,
+   "preview": "tours/sample-flat/bath-s.jpg"
   },
   {
    "id": "guest",
@@ -100,7 +104,8 @@
     }
    ],
    "mapRoom": 4,
-   "heading": -91.3
+   "heading": -91.3,
+   "preview": "tours/sample-flat/guest-s.jpg"
   }
  ],
  "map": {

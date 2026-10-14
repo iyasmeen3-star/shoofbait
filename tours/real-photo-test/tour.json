@@ -1,0 +1,17 @@
+{
+ "name": "تجربة: صورة 360° حقيقية",
+ "location": "غرفة فندقية (صورة من الإنترنت، للاختبار الداخلي فقط)",
+ "price": 0,
+ "note": "Internal test only: a real 360° photo found online (license unknown). Not a property we list.",
+ "agent": null,
+ "start": "room",
+ "panos": [
+  {
+   "id": "room",
+   "name": "غرفة النوم",
+   "image": "tours/real-photo-test/room.jpg",
+   "yaw": 0,
+   "links": []
+  }
+ ]
+}

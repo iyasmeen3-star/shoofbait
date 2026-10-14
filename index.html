@@ -1,0 +1,548 @@
+<title>شوف بيت</title>
+<meta name="description" content="جولة 360° حقيقية داخل العقار قبل لا تروح له">
+<meta property="og:title" content="شوف بيت · جولة 360° داخل العقار">
+<meta property="og:description" content="شوف البيت قبل لا تروح له: جولة 360°، المخطط بالمقاسات الحقيقية، والسعر.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap">
+<style>
+/* Layout: full-bleed 360° photo; floating glass panels (top bar, caption + room rail, agent bar, sheets). */
+:root{
+  --stage:#1A1D22;
+  --glass:rgba(255,255,255,.9);
+  --glass-solid:#FFFFFF;
+  --ink:#161A20;
+  --ink-2:#5A6069;
+  --line:rgba(22,26,32,.12);
+  --gold:#B8862F;
+  --gold-ink:#FFFFFF;
+  --chip:#F1EEE8;
+  --wa:#1F8F4E;
+  --shadow:0 10px 30px rgba(20,22,26,.22);
+  --font-display:'Reem Kufi','IBM Plex Sans Arabic',system-ui,sans-serif;
+  --font-body:'IBM Plex Sans Arabic',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --glass:rgba(24,27,32,.9);--glass-solid:#1E2228;--ink:#F2EFEA;--ink-2:#A9AEB6;--line:rgba(255,255,255,.12);
+  --gold:#D7A851;--gold-ink:#1A1408;--chip:#2A2E35;--wa:#2FA864;--shadow:0 10px 30px rgba(0,0,0,.5);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --glass:rgba(24,27,32,.9);--glass-solid:#1E2228;--ink:#F2EFEA;--ink-2:#A9AEB6;--line:rgba(255,255,255,.12);
+  --gold:#D7A851;--gold-ink:#1A1408;--chip:#2A2E35;--wa:#2FA864;--shadow:0 10px 30px rgba(0,0,0,.5);color-scheme:dark}
+[hidden]{display:none!important}
+html,body{height:100%;overflow:hidden}
+body{margin:0;background:var(--stage);color:var(--ink);font-family:var(--font-body);font-size:15px;direction:rtl;
+  -webkit-tap-highlight-color:transparent;font-variant-numeric:tabular-nums}
+button{font-family:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#stage{position:fixed;inset:0;touch-action:none}
+#stage canvas{display:block;width:100%;height:100%}
+.glass{background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:var(--shadow)}
+
+#top{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:8px;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 0;pointer-events:none}
+#top>*{pointer-events:auto}
+#brand{font-family:var(--font-display);font-weight:700;font-size:19px;padding:7px 14px;border-radius:12px;border:0}
+#brand em{font-style:normal;color:var(--gold)}
+#topTitle{min-width:0;flex:1;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:9px 14px;border-radius:12px}
+.iconBtn{border:1px solid var(--line);border-radius:12px;height:40px;padding:0 12px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.iconBtn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+#demo{position:fixed;top:calc(env(safe-area-inset-top,0px) + 62px);left:50%;transform:translateX(-50%);z-index:19;
+  font-size:11.5px;padding:5px 11px;border-radius:10px;white-space:nowrap}
+
+#dock{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 14px);
+  display:flex;flex-direction:column;gap:10px;pointer-events:none}
+#dock>*{pointer-events:auto}
+#caption{border-radius:18px;padding:12px 16px;display:flex;align-items:center;gap:12px;max-width:560px;width:100%;margin-inline:auto;box-sizing:border-box}
+#capText{flex:1;min-width:0}
+#capLevel{font-size:12px;color:var(--ink-2)}
+#capName{font-family:var(--font-display);font-size:21px;font-weight:700;line-height:1.25}
+#capDims{font-size:13.5px;color:var(--ink-2);margin-top:2px}
+#capDims b{color:var(--ink);font-weight:600}
+#planBtn{flex:0 0 auto}
+#rail{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px;max-width:900px;width:100%;margin-inline:auto;box-sizing:border-box}
+#rail::-webkit-scrollbar{display:none}
+.roomChip{flex:0 0 auto;border:1px solid var(--line);background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-radius:14px;padding:8px 13px;text-align:right;line-height:1.3}
+.roomChip b{display:block;font-size:13.5px;font-weight:600}
+.roomChip small{font-size:11.5px;color:var(--ink-2)}
+.roomChip[aria-current="true"]{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.roomChip[aria-current="true"] small{color:inherit;opacity:.85}
+#wAgent{margin-top:6px;font-size:13px;color:var(--ink-2)}
+#wAgent b{color:var(--ink)}
+.waBtn{display:flex;align-items:center;gap:7px;background:var(--wa);color:#fff;border:0;border-radius:12px;padding:11px 15px;font-weight:700;font-size:14.5px;text-decoration:none;white-space:nowrap}
+.waBtn svg{width:18px;height:18px;fill:currentColor}
+
+#welcome{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 16px calc(env(safe-area-inset-bottom,0px) + 18px);background:linear-gradient(to top,rgba(10,12,16,.7),rgba(10,12,16,0) 60%)}
+#wCard{max-width:560px;width:100%;margin-inline:auto;border-radius:24px;padding:22px;box-sizing:border-box}
+#wEyebrow{font-size:12px;color:var(--gold);font-weight:600}
+#wName{font-family:var(--font-display);font-weight:700;font-size:clamp(26px,6vw,34px);line-height:1.2;margin:6px 0 4px;text-wrap:balance}
+#wLoc{color:var(--ink-2);font-size:14px}
+#wPrice{margin-top:10px;font-size:26px;font-weight:700;color:var(--gold)}
+#wPrice small{font-size:14px;color:var(--ink-2);font-weight:500;margin-inline-start:4px}
+#wFacts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.fact{background:var(--chip);border-radius:14px;padding:10px 8px;text-align:center;min-width:0}
+.fact b{display:block;font-size:18px;font-weight:700}
+.fact small{font-size:11.5px;color:var(--ink-2)}
+#wMore{display:block;margin-top:12px;text-align:center;font-size:13.5px;color:var(--ink-2);background:none;border:0;width:100%;padding:6px}
+#wMore b{color:var(--gold)}
+#backBtn{flex:0 0 auto}
+/* listings: all properties, filtered by city → area → neighbourhood */
+#list{position:fixed;inset:0;z-index:35;overflow-y:auto;background:var(--glass-solid);-webkit-overflow-scrolling:touch}
+#listIn{max-width:1100px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 24px)}
+#listHead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+#listHead .mark{font-family:var(--font-display);font-size:26px;font-weight:700}
+#listHead .mark em{font-style:normal;color:var(--gold)}
+#listHead p{margin:0;color:var(--ink-2);font-size:14px}
+#filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:16px}
+#filters label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink-2);min-width:0}
+#filters select{width:100%;min-width:0;border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:12px;padding:10px;font:inherit;font-size:14px}
+#types{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+#types button{border:1px solid var(--line);background:var(--chip);border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600}
+#types button[aria-pressed="true"]{background:var(--ink);color:var(--glass-solid);border-color:var(--ink)}
+#count{margin:14px 0 10px;font-size:13px;color:var(--ink-2)}
+#cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.card{display:block;text-align:right;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--glass-solid);padding:0;box-shadow:0 2px 10px rgba(20,22,26,.06)}
+.card .ph{position:relative;aspect-ratio:16/10;background:#2A2E35 center/cover no-repeat}
+.card .ph .tag{position:absolute;top:10px;right:10px;background:rgba(22,26,32,.78);color:#fff;font-size:12px;font-weight:600;padding:4px 9px;border-radius:9px}
+.card .ph .tag.d{right:auto;left:10px;background:rgba(255,255,255,.9);color:#161A20}
+.card .bd{padding:12px 14px 14px}
+.card .pr{font-size:19px;font-weight:700;color:var(--gold)}
+.card .pr small{font-size:12.5px;color:var(--ink-2);font-weight:500;margin-inline-start:3px}
+.card .nm{font-weight:600;font-size:15.5px;margin-top:2px}
+.card .loc{font-size:13px;color:var(--ink-2);margin-top:2px}
+.card .ft{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:var(--ink-2)}
+.card .ft b{color:var(--ink);font-weight:600}
+#empty{padding:40px 0;text-align:center;color:var(--ink-2)}
+#wBtns{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.btn{flex:1;min-width:140px;border-radius:14px;padding:14px 16px;font-size:15.5px;font-weight:700;border:1px solid var(--line);background:var(--glass-solid)}
+.btn.primary{background:var(--gold);color:var(--gold-ink);border-color:var(--gold)}
+
+.sheet{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;background:var(--glass-solid);
+  padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 14px)}
+.sheetHead{display:flex;align-items:center;gap:10px}
+.sheetHead h2{font-family:var(--font-display);font-size:22px;margin:0;flex:1}
+.round{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--glass-solid);display:grid;place-items:center}
+.round svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+#planLevels{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+#planLevels button{border:1px solid var(--line);background:var(--chip);border-radius:10px;padding:6px 11px;font-size:13px;font-weight:600}
+#planLevels button[aria-pressed="true"]{background:var(--ink);color:var(--glass-solid)}
+#planWrap{flex:1;min-height:0;position:relative;margin-top:10px}
+#planCv{position:absolute;inset:0;width:100%;height:100%}
+.note{font-size:12.5px;color:var(--ink-2);text-align:center}
+#shareBody{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+#qr{background:#fff;padding:14px;border-radius:16px}
+#qr img,#qr canvas{display:block;width:220px;height:220px}
+#shareLine{font-family:var(--font-display);font-size:24px}
+#shareUrl{font-size:12.5px;color:var(--ink-2);word-break:break-all;max-width:320px;user-select:all}
+
+#mini{position:fixed;left:16px;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:19;width:118px;height:118px;border-radius:16px;padding:0;overflow:hidden}
+#mini canvas{display:block;width:100%;height:100%}
+#gyroBtn[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 96px);z-index:45;
+  background:var(--ink);color:var(--glass-solid);padding:10px 16px;border-radius:14px;font-size:13.5px;max-width:calc(100% - 32px);
+  text-align:center;opacity:0;transition:opacity .3s;pointer-events:none}
+#toast.show{opacity:1}
+#fade{position:fixed;inset:0;z-index:25;background:#0E1013;opacity:0;pointer-events:none;transition:opacity .25s ease}
+#loading{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:var(--stage);color:#F2EFEA;text-align:center;padding-inline:16px}
+#loading .mark{font-family:var(--font-display);font-size:30px;font-weight:700}
+#loading .mark em{font-style:normal;color:#D7A851}
+#loading p{opacity:.75;margin:8px 0 0}
+@media (max-width:520px){#wFacts{grid-template-columns:repeat(2,1fr)}#filters{grid-template-columns:repeat(2,minmax(0,1fr))}#backBtn span{display:none}#mini{width:96px;height:96px}#gyroBtn span{display:none}#capName{font-size:18px}#topTitle{display:none}
+  .waBtn span,#planBtn span{display:none}.waBtn{padding:11px}}
+@media (prefers-reduced-motion: reduce){#fade,#toast{transition:none}}
+</style>
+
+<div id="stage" aria-label="صورة 360 درجة للعقار"></div>
+
+<header id="top" hidden>
+  <button class="iconBtn glass" id="backBtn" aria-label="كل العقارات"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><span>العقارات</span></button>
+  <button id="brand" class="glass" aria-label="شوف بيت: كل العقارات">شوف <em>بيت</em></button>
+  <div id="topTitle" class="glass"></div>
+  <button class="iconBtn glass" id="gyroBtn" aria-pressed="false" aria-label="حرّك الجوال للنظر حولك" hidden>
+    <svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M3 9c-1 2-1 4 0 6M21 9c1 2 1 4 0 6"/></svg><span>حرّك الجوال</span>
+  </button>
+  <button class="iconBtn glass" id="shareBtn" aria-label="شارك">
+    <svg viewBox="0 0 24 24"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg><span>شارك</span>
+  </button>
+</header>
+<button id="mini" class="glass" aria-label="أنت هنا: افتح المخطط" hidden><canvas id="miniCv"></canvas></button>
+<div id="demo" class="glass" hidden>عرض تجريبي: صور 360° من نموذج ثلاثي الأبعاد، وليست صوراً حقيقية</div>
+
+<div id="dock" hidden>
+  <section id="caption" class="glass" aria-live="polite">
+    <div id="capText"><div id="capLevel"></div><div id="capName"></div><div id="capDims"></div></div>
+    <a class="waBtn" id="waBtn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg><span>واتساب</span></a>
+    <button class="iconBtn" id="planBtn" hidden><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 12h9V3M12 12v9"/></svg><span>المخطط</span></button>
+  </section>
+  <div id="rail" role="list" aria-label="الغرف"></div>
+</div>
+
+<section id="welcome" hidden>
+  <div id="wCard" class="glass">
+    <div id="wEyebrow">شوف البيت قبل لا تروح له</div>
+    <h1 id="wName"></h1>
+    <div id="wLoc"></div>
+    <div id="wPrice"></div>
+    <div id="wAgent"></div>
+    <div id="wFacts"></div>
+    <div id="wBtns"><button class="btn primary" id="wStart">ابدأ الجولة</button></div>
+    <button id="wMore" hidden>تصفّح <b>كل العقارات</b></button>
+  </div>
+</section>
+
+<section id="plan" class="sheet" hidden aria-label="المخطط">
+  <div class="sheetHead"><h2>المخطط</h2>
+    <button class="round" id="planClose" aria-label="إغلاق"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div id="planLevels"></div>
+  <div id="planWrap"><canvas id="planCv"></canvas></div>
+  <div class="note">المقاسات من المخطط المعماري · اضغط على غرفة فيها نقطة للانتقال إليها</div>
+</section>
+
+<section id="share" class="sheet" hidden aria-label="شارك">
+  <div class="sheetHead"><h2>شارك الجولة</h2>
+    <button class="round" id="shareClose" aria-label="إغلاق"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div id="shareBody">
+    <div id="qr" aria-label="رمز QR للجولة"></div>
+    <div id="shareLine">امسح وشوف</div>
+    <div id="shareUrl"></div>
+    <button class="btn primary" id="copyBtn" style="flex:0 0 auto;min-width:220px">انسخ الرابط</button>
+    <div class="note">ضع رمز QR في صور الإعلان على عقار وحراج، أو على لوحة "للبيع"</div>
+  </div>
+</section>
+
+<section id="list" hidden aria-label="العقارات">
+  <div id="listIn">
+    <div id="listHead"><div class="mark">شوف <em>بيت</em></div><p>عقارات تقدر تتجول فيها بـ 360° قبل لا تروح لها</p></div>
+    <div id="filters">
+      <label>المدينة<select id="fCity"></select></label>
+      <label>المنطقة<select id="fArea"></select></label>
+      <label>الحي<select id="fDist"></select></label>
+      <label>الترتيب<select id="fSort"><option value="new">الأحدث</option><option value="lo">السعر: الأقل</option><option value="hi">السعر: الأعلى</option></select></label>
+    </div>
+    <div id="types" role="group" aria-label="نوع العقار"></div>
+    <div id="count"></div>
+    <div id="cards"></div>
+    <div id="empty" hidden>لا توجد عقارات بهذه الاختيارات حالياً</div>
+  </div>
+</section>
+
+<div id="toast" role="status"></div>
+<div id="fade"></div>
+<div id="loading"><div><div class="mark">شوف <em>بيت</em></div><p id="loadMsg">جارٍ تجهيز الجولة…</p></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+const $=s=>document.querySelector(s);
+const fmt=n=>(Math.round(n*100)/100).toLocaleString('ar-EG',{maximumFractionDigits:2});
+const fmt1=n=>(Math.round(n*10)/10).toLocaleString('ar-EG',{maximumFractionDigits:1});
+const fmtP=n=>Number(n||0).toLocaleString('ar-EG');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let toastT=null;
+function toast(m,ms=2800){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),ms);}
+function fail(m){$('#loadMsg').textContent=m;throw new Error(m);}
+
+/* ============ load tour (+ optional property file for the plan and true sizes) ============ */
+/* which tour: ?tour=, #id, or the first one in tours/index.json (the list also fills the picker) */
+let TLIST=null;try{const r=await fetch('tours/index.json',{cache:'no-cache'});if(r.ok)TLIST=await r.json();}catch(e){}
+const TID=(new URLSearchParams(location.search).get('tour')||location.hash.slice(1)).trim();
+addEventListener('hashchange',()=>location.reload());
+const goList=()=>{if(new URLSearchParams(location.search).get('tour')){location.href=location.pathname;return;}location.hash='';location.reload();};
+if(!TID){showListings();$('#loading').hidden=true;await new Promise(()=>{});} /* listings only: the tour code below never runs */
+if(!/^[a-z0-9][a-z0-9_-]{0,63}$/.test(TID))fail('رابط الجولة غير صالح.');
+
+/* ============ listings: city → area → neighbourhood, type, price ============ */
+function showListings(){
+  const L=(Array.isArray(TLIST)?TLIST:[]).filter(o=>o&&o.id&&!o.hidden);
+  document.title='شوف بيت · عقارات بجولة 360°';$('#list').hidden=false;
+  const st={city:'',area:'',dist:'',type:'',sort:'new'};
+  try{Object.assign(st,JSON.parse(localStorage.getItem('sb-filters')||'{}'));}catch(e){}
+  const uniq=a=>[...new Set(a.filter(Boolean))].sort((x,y)=>x.localeCompare(y,'ar'));
+  function fill(sel,vals,cur,all){sel.innerHTML=`<option value="">${all}</option>`+vals.map(v=>`<option${v===cur?' selected':''}>${esc(v)}</option>`).join('');sel.disabled=!vals.length;}
+  function render(){
+    const cities=uniq(L.map(o=>o.city));if(st.city&&!cities.includes(st.city))st.city='';
+    const inCity=L.filter(o=>!st.city||o.city===st.city);
+    const areas=uniq(inCity.map(o=>o.area));if(st.area&&!areas.includes(st.area))st.area='';
+    const inArea=inCity.filter(o=>!st.area||o.area===st.area);
+    const dists=uniq(inArea.map(o=>o.district));if(st.dist&&!dists.includes(st.dist))st.dist='';
+    fill($('#fCity'),cities,st.city,'كل المدن');fill($('#fArea'),areas,st.area,'كل المناطق');fill($('#fDist'),dists,st.dist,'كل الأحياء');$('#fSort').value=st.sort;
+    const inDist=inArea.filter(o=>!st.dist||o.district===st.dist);
+    const types=uniq(inDist.map(o=>o.type));if(st.type&&!types.includes(st.type))st.type='';
+    $('#types').innerHTML=['',...types].map(t=>`<button data-t="${esc(t)}" aria-pressed="${t===st.type}">${t?esc(t):'الكل'}</button>`).join('');
+    let rs=inDist.filter(o=>!st.type||o.type===st.type);
+    if(st.sort!=='new')rs=rs.slice().sort((a,b)=>((a.price||Infinity)-(b.price||Infinity))*(st.sort==='lo'?1:-1));
+    $('#count').textContent=rs.length?fmtP(rs.length)+(rs.length===1?' عقار':' عقارات'):'';
+    $('#empty').hidden=!!rs.length;
+    $('#cards').innerHTML=rs.map(o=>{const loc=[o.district&&'حي '+o.district,o.area,o.city].filter(Boolean).join('، ');
+      const ft=[o.bedrooms&&`<span><b>${fmtP(o.bedrooms)}</b> غرف نوم</span>`,o.bathrooms&&`<span><b>${fmtP(o.bathrooms)}</b> دورات مياه</span>`,o.size&&`<span><b>${fmtP(o.size)}</b> م²</span>`,o.spots&&`<span><b>${fmtP(o.spots)}</b> مكان بـ 360°</span>`].filter(Boolean).join('');
+      return`<button class="card" data-id="${esc(o.id)}"><div class="ph" style="background-image:url('${esc(o.cover||'')}');background-position:${Number(o.coverX??50)}% 50%">
+        ${o.type?`<span class="tag">${esc(o.type)}</span>`:''}${o.demo?'<span class="tag d">عرض تجريبي</span>':''}</div>
+        <div class="bd">${o.price?`<div class="pr">${fmtP(o.price)}<small>ريال</small></div>`:''}<div class="nm">${esc(o.name||o.id)}</div>
+        ${loc?`<div class="loc">${esc(loc)}</div>`:''}${o.note?`<div class="loc">${esc(o.note)}</div>`:''}${ft?`<div class="ft">${ft}</div>`:''}</div></button>`;}).join('');
+    try{localStorage.setItem('sb-filters',JSON.stringify(st));}catch(e){}
+  }
+  $('#fCity').onchange=e=>{st.city=e.target.value;st.area='';st.dist='';render();};
+  $('#fArea').onchange=e=>{st.area=e.target.value;st.dist='';render();};
+  $('#fDist').onchange=e=>{st.dist=e.target.value;render();};
+  $('#fSort').onchange=e=>{st.sort=e.target.value;render();};
+  $('#types').onclick=e=>{const b=e.target.closest('button');if(!b)return;st.type=b.dataset.t;render();};
+  $('#cards').onclick=e=>{const c=e.target.closest('.card');if(!c)return;location.hash=c.dataset.id;location.reload();};
+  render();
+}
+if(location.protocol==='file:')fail('افتح الجولة عبر رابط، وليس بفتح الملف من الجهاز.');
+let TOUR,P=null;
+try{const r=await fetch('tours/'+TID+'/tour.json',{cache:'no-cache'});if(!r.ok)throw 0;TOUR=await r.json();}
+catch(e){fail('تعذّر تحميل الجولة. تحقق من الرابط.');}
+if(!TOUR||!Array.isArray(TOUR.panos)||!TOUR.panos.length)fail('بيانات الجولة غير مكتملة.');
+if(TOUR.property){try{const r=await fetch('properties/'+TOUR.property+'.json',{cache:'no-cache'});if(r.ok)P=await r.json();}catch(e){}}
+const panoById=new Map(TOUR.panos.map(p=>[String(p.id),p]));
+const roomById=new Map((P?.rooms||[]).map(r=>[r.id,r]));
+const ORD=['الأول','الثاني','الثالث','الرابع'];
+const levelName=fl=>(P?.floorNames&&P.floorNames[fl])||(fl===0?'الدور الأرضي':'الدور '+(ORD[fl-1]||fl+1));
+const kindOf=n=>/حمام|دورة|مياه/.test(n)?'bath':/نوم|ماستر|رئيسية/.test(n)&&!/ملابس/.test(n)?'bed':'other';
+
+/* ============ renderer: one inverted sphere showing the equirectangular photo ============ */
+const stage=$('#stage');
+let renderer;
+try{renderer=new THREE.WebGLRenderer({antialias:true});}catch(e){fail('هذا المتصفح لا يدعم العرض ثلاثي الأبعاد.');}
+renderer.setPixelRatio(Math.min(2,devicePixelRatio||1));stage.appendChild(renderer.domElement);
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(75,1,0.1,200);camera.rotation.order='YXZ';
+const panoMat=new THREE.ShaderMaterial({uniforms:{map:{value:null}},side:THREE.BackSide,depthWrite:false,toneMapped:false,
+  vertexShader:'varying vec3 vDir;void main(){vDir=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+  /* standard 360° photo: centre = straight ahead (-z), right half = turning right, top = up */
+  fragmentShader:`uniform sampler2D map;varying vec3 vDir;
+    void main(){vec3 d=normalize(vDir);float lon=atan(d.x,-d.z);float lat=asin(clamp(d.y,-1.0,1.0));
+      gl_FragColor=texture2D(map,vec2(lon/6.28318530718+0.5,lat/3.14159265359+0.5));
+      #include <colorspace_fragment>
+    }`});
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(50,64,40),panoMat));
+
+const loader=new THREE.TextureLoader();const texCache=new Map();
+function loadTex(p){if(!texCache.has(p.id))texCache.set(p.id,new Promise((res,rej)=>loader.load(p.image,t=>{t.colorSpace=THREE.SRGBColorSpace;
+  t.generateMipmaps=false;t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter;res(t);},undefined,rej)));return texCache.get(p.id);}
+
+/* hotspots: round markers on the floor (or a stairs marker), with the room name */
+const hotGroup=new THREE.Group();scene.add(hotGroup);
+function hotTexture(label,up){
+  const c=document.createElement('canvas');c.width=512;c.height=320;const g=c.getContext('2d');
+  g.fillStyle='rgba(255,255,255,.95)';g.beginPath();g.arc(256,110,74,0,7);g.fill();
+  g.lineWidth=10;g.strokeStyle='#B8862F';g.stroke();
+  g.strokeStyle='#161A20';g.lineWidth=16;g.lineCap='round';g.lineJoin='round';g.beginPath();
+  if(up){g.moveTo(214,128);g.lineTo(256,86);g.lineTo(298,128);}else{g.moveTo(214,96);g.lineTo(256,138);g.lineTo(298,96);g.moveTo(256,138);g.lineTo(256,138);}
+  g.stroke();
+  g.font='700 46px "IBM Plex Sans Arabic",sans-serif';g.textAlign='center';const w=g.measureText(label).width+40;
+  g.fillStyle='rgba(22,26,32,.82)';const x=256-w/2;g.beginPath();g.roundRect(x,212,w,72,22);g.fill();
+  g.fillStyle='#fff';g.fillText(label,256,262);
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;
+}
+const dirFrom=(yaw,pitch)=>{const y=THREE.MathUtils.degToRad(yaw),p=THREE.MathUtils.degToRad(pitch);
+  return new THREE.Vector3(Math.sin(y)*Math.cos(p),Math.sin(p),-Math.cos(y)*Math.cos(p));};
+function buildHotspots(p){
+  hotGroup.clear();
+  (p.links||[]).forEach(l=>{const target=panoById.get(String(l.to));if(!target)return;
+    const up=(l.pitch??-16)>0;
+    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:hotTexture(l.label||target.name,up),depthTest:false,transparent:true}));
+    s.position.copy(dirFrom(l.yaw,l.pitch??-16).multiplyScalar(8));s.scale.set(2.6,1.62,1);s.userData.to=String(l.to);hotGroup.add(s);});
+}
+
+/* ============ state + navigation ============ */
+const look={yaw:0,pitch:-6,fov:90};let userZoomed=false;
+/* wide view, like standing in the room: aim for ~115° across the screen, within what still looks natural */
+function fitFov(){const a=Math.max(0.3,stage.clientWidth/Math.max(1,stage.clientHeight));
+  const v=2*Math.atan(Math.tan(THREE.MathUtils.degToRad(115)/2)/a);return Math.min(110,Math.max(75,THREE.MathUtils.radToDeg(v)));}let current=null,started=false;
+/* tween the view (yaw/pitch/fov) for the walk-in effect */
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let tween=null,busy=false;
+function tweenLook(to,ms){return new Promise(res=>{if(REDUCED){Object.assign(look,to);return res();}
+  let dy=((to.yaw-look.yaw)%360+540)%360-180;tween={from:{yaw:look.yaw,pitch:look.pitch,fov:camera.fov},to:{yaw:look.yaw+dy,pitch:to.pitch,fov:to.fov},t0:performance.now(),ms,res};});}
+async function go(id,{instant=false}={}){
+  const p=panoById.get(String(id));if(!p||busy)return;busy=true;
+  const f=$('#fade'),normal=userZoomed?look.fov:fitFov();
+  const fwd=current&&!instant?(current.links||[]).find(l=>String(l.to)===String(p.id)):null;
+  const tex=loadTex(p);
+  if(!instant){
+    /* walk in: turn to the doorway and move towards it, then fade into the next room */
+    if(fwd){f.style.transition='opacity .22s ease';setTimeout(()=>f.style.opacity='1',300);await tweenLook({yaw:fwd.yaw,pitch:-4,fov:Math.max(38,normal*0.5)},520);}
+    else{f.style.opacity='1';await new Promise(r=>setTimeout(r,260));}}
+  try{panoMat.uniforms.map.value=await tex;}catch(e){toast('تعذّر تحميل صورة هذه الغرفة');f.style.opacity='0';look.fov=normal;busy=false;return;}
+  /* keep facing the direction we walked in, unless the room sets its own start */
+  /* arriving: use the link's "face" if set; keep the walking direction only when all photos face the
+     same way (tour.aligned, e.g. renders from our 3D model); otherwise the room's own start view */
+  const back=current&&!instant?(current.links||[]).find(l=>String(l.to)===String(p.id)):null;
+  look.yaw=back&&back.face!=null?back.face:back&&TOUR.aligned?back.yaw:(p.yaw||0);
+  look.pitch=-5;current=p;buildHotspots(p);ui();gyroRebase();
+  (p.links||[]).forEach(l=>{const t=panoById.get(String(l.to));if(t)loadTex(t).catch(()=>{});});
+  /* arrive a little zoomed in and settle back to the wide view: feels like stepping in */
+  if(!instant&&!REDUCED){camera.fov=look.fov=normal*0.8;camera.updateProjectionMatrix();requestAnimationFrame(()=>{look.fov=normal;});}else look.fov=normal;
+  requestAnimationFrame(()=>{f.style.transition='';f.style.opacity='0';});busy=false;
+}
+
+/* ============ input: drag to look, pinch/wheel to zoom, tap a marker to move ============ */
+const ptr=new Map();let down=null,pinch=null;const ray=new THREE.Raycaster(),ndc=new THREE.Vector2();
+const cv=renderer.domElement;
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptr.size===1)down={x:e.clientX,y:e.clientY,moved:0,t:performance.now()};
+  if(ptr.size===2){const[a,b]=[...ptr.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),fov:look.fov};down=null;}});
+cv.addEventListener('pointermove',e=>{if(!ptr.has(e.pointerId))return;const q=ptr.get(e.pointerId);const dx=e.clientX-q.x,dy=e.clientY-q.y;ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptr.size===2&&pinch){userZoomed=true;const[a,b]=[...ptr.values()];look.fov=Math.min(120,Math.max(40,pinch.fov*pinch.d/Math.max(10,Math.hypot(a.x-b.x,a.y-b.y))));return;}
+  if(down)down.moved+=Math.abs(dx)+Math.abs(dy);
+  const k=look.fov/75*0.12;if(gyro.on){gyro.off-=dx*k;return;}look.yaw-=dx*k;look.pitch=Math.max(-85,Math.min(85,look.pitch+dy*k));});
+cv.addEventListener('pointerup',e=>{ptr.delete(e.pointerId);if(ptr.size<2)pinch=null;
+  if(down&&down.moved<8&&performance.now()-down.t<450&&started){const rc=cv.getBoundingClientRect();
+    ndc.set(((e.clientX-rc.left)/rc.width)*2-1,-((e.clientY-rc.top)/rc.height)*2+1);ray.setFromCamera(ndc,camera);
+    const h=ray.intersectObjects(hotGroup.children,false)[0];if(h)go(h.object.userData.to);}
+  if(ptr.size===0)down=null;});
+cv.addEventListener('pointercancel',e=>{ptr.delete(e.pointerId);down=null;pinch=null;});
+cv.addEventListener('wheel',e=>{e.preventDefault();userZoomed=true;look.fov=Math.min(120,Math.max(40,look.fov*(e.deltaY>0?1.06:0.94)));},{passive:false});
+
+/* ============ UI ============ */
+function dimsOf(p){const r=p.roomId!=null?roomById.get(p.roomId):null;
+  return r?`<b>${fmt(r.w)} × ${fmt(r.l)} م</b> · ${fmt1(r.w*r.l)} م²${r.open?' · مساحة خارجية':''}`:(p.note?esc(p.note):'');}
+function ui(){
+  const p=current;if(!p)return;
+  $('#capLevel').textContent=p.floor!=null&&P?levelName(p.floor):'';
+  $('#capName').textContent=p.name;$('#capDims').innerHTML=dimsOf(p);
+  $('#mini').hidden=!started||!miniSpot(p);
+  [...$('#rail').children].forEach(c=>{const on=c._id===String(p.id);c.setAttribute('aria-current',String(on));if(on)c.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});});
+}
+function buildUI(){
+  document.title=(TOUR.name||'جولة')+' · شوف بيت';
+  $('#topTitle').textContent=TOUR.name||'';
+  $('#wName').textContent=TOUR.name||'';$('#wLoc').textContent=TOUR.location||'';
+  $('#wPrice').innerHTML=TOUR.price?fmtP(TOUR.price)+'<small>ريال</small>':'';
+  $('#demo').hidden=!TOUR.demo;
+  /* facts from the property file when we have it */
+  const facts=[];
+  if(P){const rs=P.rooms;const inner=rs.filter(r=>!r.open&&!r.structural).reduce((s,r)=>s+r.w*r.l,0);
+    facts.push(TOUR.area?[fmtP(TOUR.area),'م² (حسب الصك)']:[fmtP(Math.round(inner)),'م² داخلية'],[fmtP(rs.filter(r=>kindOf(r.name)==='bed').length),'غرف نوم'],[fmtP(rs.filter(r=>kindOf(r.name)==='bath').length),'دورات مياه']);}
+  facts.push([fmtP(TOUR.panos.length),'مكان بـ 360°']);
+  $('#wFacts').innerHTML=facts.map(([b,s])=>`<div class="fact"><b>${esc(b)}</b><small>${esc(s)}</small></div>`).join('');
+  TOUR.panos.forEach(p=>{const b=document.createElement('button');b.className='roomChip';b.setAttribute('role','listitem');b._id=String(p.id);
+    const r=p.roomId!=null?roomById.get(p.roomId):null;
+    b.innerHTML=`<b>${esc(p.name)}</b><small>${r?fmt1(r.w*r.l)+' م²':''}${r&&P&&new Set(TOUR.panos.map(x=>x.floor)).size>1?' · '+esc(levelName(p.floor)):''}</small>`;
+    b.onclick=()=>go(p.id);$('#rail').appendChild(b);});
+  /* agent: buyers contact the marketer, not us */
+  const a=TOUR.agent;
+  if(a&&a.whatsapp){const num=String(a.whatsapp).replace(/\D/g,'');
+    const msg=`السلام عليكم، شفت جولة "${TOUR.name}" على شوف بيت وأبي أستفسر`;
+    $('#wAgent').innerHTML=`للتواصل: <b>${esc(a.name||'المسوّق')}</b>`;
+    $('#waBtn').href='https://wa.me/'+num+'?text='+encodeURIComponent(msg);}
+  else{$('#wAgent').textContent='هنا يظهر اسم المسوّق ورقمه لكل عقار';
+    $('#waBtn').removeAttribute('href');$('#waBtn').onclick=e=>{e.preventDefault();toast('مثال: في الجولات الحقيقية يفتح هذا الزر واتساب المسوّق');};}
+  $('#planBtn').hidden=!P;
+  $('#wMore').hidden=!(Array.isArray(TLIST)&&TLIST.length>1);$('#wMore').onclick=goList;
+}
+$('#wStart').onclick=()=>{const again=!!started||$('#wStart').dataset.seen;$('#wStart').dataset.seen='1';started=true;$('#welcome').hidden=true;$('#top').hidden=false;$('#dock').hidden=false;ui();
+  let embedded=true;try{embedded=window.self!==window.top;}catch(e){}
+  gyro.embedded=embedded;$('#gyroBtn').hidden=!('DeviceOrientationEvent' in window&&matchMedia('(pointer:coarse)').matches);
+  if(!again)setTimeout(()=>toast('اسحب للنظر حولك، واضغط على العلامات للتنقل بين الغرف',3800),500);};
+
+/* plan sheet: true sizes from the plan, dots where a 360° photo exists */
+let planLevel=0,planXf=null;const planCv=$('#planCv'),pctx=planCv.getContext('2d');
+function drawPlan(){
+  const W=planCv.clientWidth,H=planCv.clientHeight,dpr=Math.min(2,devicePixelRatio||1);planCv.width=W*dpr;planCv.height=H*dpr;pctx.setTransform(dpr,0,0,dpr,0,0);pctx.clearRect(0,0,W,H);
+  const rs=P.rooms.filter(r=>r.floor===planLevel);if(!rs.length)return;
+  const x0=Math.min(...rs.map(r=>r.x))-0.3,x1=Math.max(...rs.map(r=>r.x+r.w))+0.3,z0=Math.min(...rs.map(r=>r.y))-0.3,z1=Math.max(...rs.map(r=>r.y+r.l))+0.3;
+  const s=Math.min(W/(x1-x0),H/(z1-z0)),ox=(W-(x1-x0)*s)/2-x0*s,oz=(H-(z1-z0)*s)/2-z0*s;planXf={s,ox,oz};
+  const gold=getComputedStyle(document.documentElement).getPropertyValue('--gold').trim();
+  rs.forEach(r=>{const x=ox+r.x*s,y=oz+r.y*s,w=r.w*s,h=r.l*s;const here=current&&current.roomId===r.id;
+    pctx.fillStyle=r.open?'#E2EBD3':r.structural?'#E1D9C9':'#EFE8DC';pctx.fillRect(x,y,w,h);
+    pctx.lineWidth=here?3:1.5;pctx.strokeStyle=here?gold:'#2A2E35';pctx.strokeRect(x,y,w,h);
+    if(w>46&&h>30){pctx.textAlign='center';pctx.fillStyle='#20242B';pctx.font='600 '+Math.max(11,Math.min(14,w/8))+'px "IBM Plex Sans Arabic",sans-serif';
+      pctx.fillText(r.name,x+w/2,y+h/2-4);pctx.fillStyle='#5A6069';pctx.font='400 11px "IBM Plex Sans Arabic",sans-serif';pctx.fillText(fmt(r.w)+' × '+fmt(r.l)+' م',x+w/2,y+h/2+12);}
+    if(TOUR.panos.some(p=>p.roomId===r.id)){pctx.fillStyle=here?gold:'#161A20';pctx.beginPath();pctx.arc(x+w/2,y+h/2+26,here?7:5,0,7);pctx.fill();}});
+}
+planCv.addEventListener('click',e=>{if(!planXf)return;const rc=planCv.getBoundingClientRect();const x=(e.clientX-rc.left-planXf.ox)/planXf.s,z=(e.clientY-rc.top-planXf.oz)/planXf.s;
+  const r=P.rooms.find(o=>o.floor===planLevel&&x>=o.x&&x<=o.x+o.w&&z>=o.y&&z<=o.y+o.l);const p=r&&TOUR.panos.find(q=>q.roomId===r.id);
+  if(p){$('#plan').hidden=true;go(p.id);}});
+$('#planBtn').onclick=()=>{planLevel=current&&current.floor!=null?current.floor:0;$('#plan').hidden=false;
+  const pl=$('#planLevels');pl.innerHTML='';[...new Set(P.rooms.map(r=>r.floor))].sort().forEach(fl=>{if(P.rooms.filter(r=>r.floor===fl).every(r=>r.structural))return;
+    const b=document.createElement('button');b.textContent=levelName(fl);b.setAttribute('aria-pressed',String(fl===planLevel));
+    b.onclick=()=>{planLevel=fl;[...pl.children].forEach(c=>c.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');drawPlan();};pl.appendChild(b);});
+  requestAnimationFrame(drawPlan);};
+$('#planClose').onclick=()=>$('#plan').hidden=true;
+
+/* share: QR code + link */
+const shareUrl=TOUR.shareUrl||(location.origin+location.pathname+'#'+TID);
+let qrMade=false;
+$('#shareBtn').onclick=()=>{$('#share').hidden=false;$('#shareUrl').textContent=shareUrl;
+  if(!qrMade&&window.QRCode){new QRCode($('#qr'),{text:shareUrl,width:440,height:440,colorDark:'#161A20',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});qrMade=true;}};
+$('#shareClose').onclick=()=>$('#share').hidden=true;
+$('#copyBtn').onclick=()=>{const done=()=>toast('تم نسخ الرابط');
+  try{navigator.clipboard.writeText(shareUrl).then(done,()=>{getSelection().selectAllChildren($('#shareUrl'));toast('حدّد الرابط وانسخه');});}
+  catch(e){getSelection().selectAllChildren($('#shareUrl'));toast('حدّد الرابط وانسخه');}};
+/* back / logo: all listings */
+$('#backBtn').onclick=goList;$('#brand').onclick=goList;
+
+/* ============ mini-map: where you are and which way you're looking ============
+   Rooms come from the property file, or a rough "map" in tour.json (layout only, no sizes).
+   Each photo's "heading" = the plan direction (degrees clockwise from the plan's top) that the photo's
+   centre faces; 0 for tours whose photos all face the plan's top (aligned renders). */
+const MAP=P?{rooms:P.rooms.filter(r=>!r.structural)}:TOUR.map&&Array.isArray(TOUR.map.rooms)?TOUR.map:null;
+const miniCv=$('#miniCv'),mctx=miniCv.getContext('2d');
+function miniRoom(p){if(!MAP)return null;if(p.roomId!=null)return MAP.rooms.find(r=>r.id===p.roomId&&(r.floor??0)===(p.floor??0))||null;
+  return p.mapRoom!=null?MAP.rooms.find(r=>r.id===p.mapRoom)||null:null;}
+function miniSpot(p){const r=miniRoom(p);if(!r)return null;const at=p.at||[r.x+r.w/2,r.y+r.l/2];
+  const heading=p.heading!=null?p.heading:TOUR.aligned?0:null;return{r,x:at[0],y:at[1],heading};}
+let miniKey='';
+function drawMini(){
+  if(!current||$('#mini').hidden)return;const sp=miniSpot(current);if(!sp)return;
+  const hf=2*Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*camera.aspect);
+  const key=current.id+'|'+Math.round(look.yaw)+'|'+Math.round(hf*20);if(key===miniKey)return;miniKey=key;
+  const W=miniCv.clientWidth,H=miniCv.clientHeight,dpr=Math.min(2,devicePixelRatio||1);
+  if(miniCv.width!==W*dpr){miniCv.width=W*dpr;miniCv.height=H*dpr;}mctx.setTransform(dpr,0,0,dpr,0,0);mctx.clearRect(0,0,W,H);
+  const fl=current.floor??0,rs=MAP.rooms.filter(r=>(r.floor??0)===fl);
+  const x0=Math.min(...rs.map(r=>r.x)),x1=Math.max(...rs.map(r=>r.x+r.w)),z0=Math.min(...rs.map(r=>r.y)),z1=Math.max(...rs.map(r=>r.y+r.l));
+  const pad=9,s=Math.min((W-2*pad)/(x1-x0),(H-2*pad)/(z1-z0)),ox=(W-(x1-x0)*s)/2-x0*s,oz=(H-(z1-z0)*s)/2-z0*s;
+  const css=getComputedStyle(document.documentElement),gold=css.getPropertyValue('--gold').trim(),ink=css.getPropertyValue('--ink').trim();
+  rs.forEach(r=>{const here=r===sp.r;mctx.globalAlpha=here?0.32:0.1;mctx.fillStyle=here?gold:ink;mctx.fillRect(ox+r.x*s,oz+r.y*s,r.w*s,r.l*s);
+    mctx.globalAlpha=0.55;mctx.strokeStyle=ink;mctx.lineWidth=1;mctx.strokeRect(ox+r.x*s+.5,oz+r.y*s+.5,r.w*s-1,r.l*s-1);});
+  mctx.globalAlpha=1;const cx=ox+sp.x*s,cy=oz+sp.y*s;
+  if(sp.heading!=null){const b=THREE.MathUtils.degToRad(look.yaw+sp.heading),R=Math.max(W,H)*0.42;
+    mctx.fillStyle=gold;mctx.globalAlpha=0.5;mctx.beginPath();mctx.moveTo(cx,cy);mctx.arc(cx,cy,R,b-Math.PI/2-hf/2,b-Math.PI/2+hf/2);mctx.closePath();mctx.fill();mctx.globalAlpha=1;}
+  mctx.fillStyle='#fff';mctx.beginPath();mctx.arc(cx,cy,5.5,0,7);mctx.fill();mctx.fillStyle=gold;mctx.beginPath();mctx.arc(cx,cy,3.8,0,7);mctx.fill();
+}
+$('#mini').onclick=()=>{if(P)$('#planBtn').click();};
+
+/* ============ look around by moving the phone (where the browser allows it) ============ */
+const gyro={on:false,off:0,raw:null,got:false};
+const _q=new THREE.Quaternion(),_e=new THREE.Euler(),_qx=new THREE.Quaternion(-Math.sqrt(.5),0,0,Math.sqrt(.5)),_qz=new THREE.Quaternion(),_z=new THREE.Vector3(0,0,1);
+function onOrient(ev){if(ev.alpha==null)return;gyro.got=true;
+  const R=THREE.MathUtils.degToRad,so=R((screen.orientation&&screen.orientation.angle)||window.orientation||0);
+  _e.set(R(ev.beta),R(ev.alpha),-R(ev.gamma),'YXZ');_q.setFromEuler(_e).multiply(_qx).multiply(_qz.setFromAxisAngle(_z,-so));
+  _e.setFromQuaternion(_q,'YXZ');gyro.raw={yaw:-THREE.MathUtils.radToDeg(_e.y),pitch:THREE.MathUtils.radToDeg(_e.x)};
+  if(!gyro.on||tween)return;look.yaw=gyro.raw.yaw+gyro.off;look.pitch=Math.max(-85,Math.min(85,gyro.raw.pitch));}
+function gyroRebase(){if(gyro.on&&gyro.raw)gyro.off=look.yaw-gyro.raw.yaw;}
+async function gyroToggle(){const b=$('#gyroBtn');
+  if(gyro.embedded){toast('قريباً: حرّك الجوال للنظر حولك. تعمل على موقع شوف بيت، وليس داخل هذه المعاينة',3600);return;}
+  if(gyro.on){gyro.on=false;b.setAttribute('aria-pressed','false');return;}
+  try{if(typeof DeviceOrientationEvent.requestPermission==='function'&&await DeviceOrientationEvent.requestPermission()!=='granted'){toast('لم يُسمح باستخدام حركة الجوال');return;}}
+  catch(e){toast('حركة الجوال غير متاحة هنا');return;}
+  addEventListener('deviceorientation',onOrient);gyro.got=false;
+  setTimeout(()=>{if(!gyro.got){gyro.on=false;b.setAttribute('aria-pressed','false');toast('حركة الجوال غير متاحة في هذا المتصفح');}},1500);
+  const wait=()=>{if(gyro.raw){gyro.on=true;gyroRebase();b.setAttribute('aria-pressed','true');toast('حرّك الجوال للنظر حولك',2200);}else if(!gyro.got)setTimeout(wait,100);};
+  setTimeout(wait,50);}
+$('#gyroBtn').onclick=gyroToggle;
+
+/* ============ frame loop ============ */
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;
+  if(!userZoomed){look.fov=fitFov();camera.fov=look.fov;}camera.updateProjectionMatrix();if(!$('#plan').hidden)drawPlan();}
+addEventListener('resize',resize);resize();
+let last=performance.now();
+function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last)/1000);last=now;
+  if(!started)look.yaw+=dt*4; /* slow turn behind the welcome card */
+  if(tween){const k=Math.min(1,(now-tween.t0)/tween.ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2,a=tween.from,b=tween.to;
+    look.yaw=a.yaw+(b.yaw-a.yaw)*e;look.pitch=a.pitch+(b.pitch-a.pitch)*e;camera.fov=look.fov=a.fov+(b.fov-a.fov)*e;camera.updateProjectionMatrix();
+    if(k>=1){const r=tween.res;tween=null;r();}}
+  if(!tween&&Math.abs(camera.fov-look.fov)>0.01){camera.fov+=(look.fov-camera.fov)*Math.min(1,dt*7);camera.updateProjectionMatrix();}
+  camera.rotation.set(THREE.MathUtils.degToRad(look.pitch),-THREE.MathUtils.degToRad(look.yaw),0);
+  renderer.render(scene,camera);drawMini();}
+buildUI();
+await go(TOUR.start||TOUR.panos[0].id,{instant:true});
+$('#welcome').hidden=false;$('#loading').hidden=true;
+requestAnimationFrame(frame);
+</script>

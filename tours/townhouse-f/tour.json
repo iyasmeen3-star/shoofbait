@@ -1,0 +1,344 @@
+{
+ "name": "تاون هاوس F — وسطي",
+ "location": "مشروع سكني، الرياض",
+ "price": 1450000,
+ "property": "townhouse-f",
+ "demo": true,
+ "note": "Demo: 360° images rendered from our 3D model of the townhouse, not real photos.",
+ "agent": null,
+ "start": "street",
+ "panos": [
+  {
+   "id": "street",
+   "name": "أمام البيت",
+   "floor": 0,
+   "image": "tours/townhouse-f/street.jpg",
+   "yaw": 180,
+   "links": [
+    {
+     "to": "1",
+     "yaw": -158.2,
+     "pitch": -16
+    },
+    {
+     "to": "4",
+     "yaw": 161.7,
+     "pitch": -16
+    }
+   ]
+  },
+  {
+   "id": "1",
+   "name": "المجلس",
+   "roomId": 1,
+   "floor": 0,
+   "image": "tours/townhouse-f/1.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "street",
+     "yaw": 21.8,
+     "pitch": -16
+    },
+    {
+     "to": "4",
+     "yaw": 108.5,
+     "pitch": -16
+    },
+    {
+     "to": "2",
+     "yaw": 180.0,
+     "pitch": -16
+    },
+    {
+     "to": "5",
+     "yaw": 153.8,
+     "pitch": -16
+    }
+   ]
+  },
+  {
+   "id": "2",
+   "name": "الطعام",
+   "roomId": 2,
+   "floor": 0,
+   "image": "tours/townhouse-f/2.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "5",
+     "yaw": 116.6,
+     "pitch": -16
+    },
+    {
+     "to": "1",
+     "yaw": 0.0,
+     "pitch": -16
+    },
+    {
+     "to": "4",
+     "yaw": 54.0,
+     "pitch": -16
+    },
+    {
+     "to": "14",
+     "yaw": 180.0,
+     "pitch": 6,
+     "label": "الدور الأول ⬆"
+    }
+   ]
+  },
+  {
+   "id": "4",
+   "name": "موقف السيارة",
+   "roomId": 4,
+   "floor": 0,
+   "image": "tours/townhouse-f/4.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "street",
+     "yaw": -18.3,
+     "pitch": -16
+    },
+    {
+     "to": "1",
+     "yaw": -71.5,
+     "pitch": -16
+    },
+    {
+     "to": "5",
+     "yaw": -164.0,
+     "pitch": -16
+    },
+    {
+     "to": "2",
+     "yaw": -126.0,
+     "pitch": -16
+    }
+   ]
+  },
+  {
+   "id": "5",
+   "name": "دورة مياه ضيوف",
+   "roomId": 5,
+   "floor": 0,
+   "image": "tours/townhouse-f/5.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "2",
+     "yaw": -63.4,
+     "pitch": -16
+    },
+    {
+     "to": "4",
+     "yaw": 16.0,
+     "pitch": -16
+    },
+    {
+     "to": "1",
+     "yaw": -26.2,
+     "pitch": -16
+    }
+   ]
+  },
+  {
+   "id": "11",
+   "name": "الغرفة الرئيسية",
+   "roomId": 11,
+   "floor": 1,
+   "image": "tours/townhouse-f/11.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "13",
+     "yaw": 170.1,
+     "pitch": -16
+    },
+    {
+     "to": "12",
+     "yaw": -162.4,
+     "pitch": -16
+    },
+    {
+     "to": "16",
+     "yaw": 87.2,
+     "pitch": -16
+    }
+   ]
+  },
+  {
+   "id": "12",
+   "name": "حمام الرئيسية",
+   "roomId": 12,
+   "floor": 1,
+   "image": "tours/townhouse-f/12.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "13",
+     "yaw": 77.1,
+     "pitch": -16
+    },
+    {
+     "to": "14",
+     "yaw": 164.3,
+     "pitch": -16
+    },
+    {
+     "to": "11",
+     "yaw": 17.6,
+     "pitch": -16
+    }
+   ]
+  },
+  {
+   "id": "13",
+   "name": "غرفة الملابس",
+   "roomId": 13,
+   "floor": 1,
+   "image": "tours/townhouse-f/13.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "12",
+     "yaw": -102.9,
+     "pitch": -16
+    },
+    {
+     "to": "11",
+     "yaw": -9.9,
+     "pitch": -16
+    },
+    {
+     "to": "17",
+     "yaw": 111.1,
+     "pitch": -16
+    },
+    {
+     "to": "14",
+     "yaw": -169.2,
+     "pitch": -16
+    },
+    {
+     "to": "16",
+     "yaw": 45.4,
+     "pitch": -16
+    },
+    {
+     "to": "18",
+     "yaw": 153.4,
+     "pitch": -16
+    }
+   ]
+  },
+  {
+   "id": "14",
+   "name": "صالة عائلية",
+   "roomId": 14,
+   "floor": 1,
+   "image": "tours/townhouse-f/14.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "18",
+     "yaw": 109.2,
+     "pitch": -16
+    },
+    {
+     "to": "12",
+     "yaw": -15.7,
+     "pitch": -16
+    },
+    {
+     "to": "13",
+     "yaw": 10.8,
+     "pitch": -16
+    },
+    {
+     "to": "2",
+     "yaw": 0.0,
+     "pitch": -20,
+     "label": "الدور الأرضي ⬇"
+    }
+   ]
+  },
+  {
+   "id": "16",
+   "name": "غرفة نوم 2",
+   "roomId": 16,
+   "floor": 1,
+   "image": "tours/townhouse-f/16.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "11",
+     "yaw": -92.8,
+     "pitch": -16
+    },
+    {
+     "to": "17",
+     "yaw": -179.4,
+     "pitch": -16
+    },
+    {
+     "to": "13",
+     "yaw": -134.6,
+     "pitch": -16
+    }
+   ]
+  },
+  {
+   "id": "17",
+   "name": "غرفة نوم 3",
+   "roomId": 17,
+   "floor": 1,
+   "image": "tours/townhouse-f/17.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "13",
+     "yaw": -68.9,
+     "pitch": -16
+    },
+    {
+     "to": "18",
+     "yaw": -165.8,
+     "pitch": -16
+    },
+    {
+     "to": "16",
+     "yaw": 0.6,
+     "pitch": -16
+    }
+   ]
+  },
+  {
+   "id": "18",
+   "name": "حمام مشترك",
+   "roomId": 18,
+   "floor": 1,
+   "image": "tours/townhouse-f/18.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "14",
+     "yaw": -70.8,
+     "pitch": -16
+    },
+    {
+     "to": "17",
+     "yaw": 14.2,
+     "pitch": -16
+    },
+    {
+     "to": "13",
+     "yaw": -26.6,
+     "pitch": -16
+    }
+   ]
+  }
+ ],
+ "aligned": true
+}

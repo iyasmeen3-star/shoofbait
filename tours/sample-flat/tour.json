@@ -1,0 +1,151 @@
+{
+ "name": "شقة تجريبية (صور 360° عشوائية)",
+ "location": "للاختبار الداخلي فقط: صور من الإنترنت من بيوت مختلفة",
+ "price": 0,
+ "agent": null,
+ "start": "street",
+ "note": "Internal test only: random 360° photos from the internet (different homes, licences unknown), linked as one flat.",
+ "panos": [
+  {
+   "id": "street",
+   "name": "أمام العمارة",
+   "image": "tours/sample-flat/street.jpg",
+   "yaw": -75.8,
+   "links": [
+    {
+     "to": "living",
+     "yaw": -68.7,
+     "pitch": -12,
+     "label": "ادخل"
+    }
+   ]
+  },
+  {
+   "id": "living",
+   "name": "الصالة",
+   "image": "tours/sample-flat/living.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "street",
+     "yaw": -144.9,
+     "pitch": -12,
+     "label": "المدخل"
+    },
+    {
+     "to": "guest",
+     "yaw": -87.6,
+     "pitch": -14,
+     "label": "غرفة الضيوف"
+    },
+    {
+     "to": "bedroom",
+     "yaw": 11.8,
+     "pitch": -14,
+     "label": "غرفة النوم الرئيسية"
+    }
+   ],
+   "mapRoom": 1,
+   "heading": 0
+  },
+  {
+   "id": "bedroom",
+   "name": "غرفة النوم الرئيسية",
+   "image": "tours/sample-flat/bedroom.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "living",
+     "yaw": -132.6,
+     "pitch": -14,
+     "label": "الصالة"
+    },
+    {
+     "to": "bath",
+     "yaw": 167.0,
+     "pitch": -14,
+     "label": "دورة المياه"
+    }
+   ],
+   "mapRoom": 2,
+   "heading": -8.7
+  },
+  {
+   "id": "bath",
+   "name": "دورة المياه",
+   "image": "tours/sample-flat/bath.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "bedroom",
+     "yaw": 120.8,
+     "pitch": -14,
+     "label": "غرفة النوم"
+    }
+   ],
+   "mapRoom": 3,
+   "heading": -150
+  },
+  {
+   "id": "guest",
+   "name": "غرفة الضيوف",
+   "image": "tours/sample-flat/guest.jpg",
+   "yaw": 0,
+   "links": [
+    {
+     "to": "living",
+     "yaw": -174.1,
+     "pitch": -14,
+     "label": "الصالة"
+    }
+   ],
+   "mapRoom": 4,
+   "heading": -91.3
+  }
+ ],
+ "map": {
+  "note": "Rough layout for the mini-map only (these photos are from different homes): positions, not sizes.",
+  "rooms": [
+   {
+    "id": 1,
+    "name": "الصالة",
+    "x": 2.5,
+    "y": 4,
+    "w": 5,
+    "l": 4
+   },
+   {
+    "id": 2,
+    "name": "غرفة النوم الرئيسية",
+    "x": 5,
+    "y": 0,
+    "w": 4,
+    "l": 4
+   },
+   {
+    "id": 3,
+    "name": "دورة المياه",
+    "x": 7.5,
+    "y": 4,
+    "w": 2,
+    "l": 2.5
+   },
+   {
+    "id": 4,
+    "name": "غرفة الضيوف",
+    "x": 0,
+    "y": 4.5,
+    "w": 2.5,
+    "l": 3
+   },
+   {
+    "id": 5,
+    "name": "المدخل",
+    "x": 2.5,
+    "y": 8,
+    "w": 2.5,
+    "l": 1.5
+   }
+  ]
+ }
+}

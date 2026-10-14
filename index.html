@@ -1,9 +1,10 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
 <title>شوف بيت</title>
 <meta name="description" content="جولة 360° حقيقية داخل العقار قبل لا تروح له">
 <meta property="og:title" content="شوف بيت · جولة 360° داخل العقار">
 <meta property="og:description" content="شوف البيت قبل لا تروح له: جولة 360°، المخطط بالمقاسات الحقيقية، والسعر.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: full-bleed 360° photo; floating glass panels (top bar, caption + room rail, agent bar, sheets). */
 :root{
@@ -13,26 +14,34 @@
   --ink:#161A20;
   --ink-2:#5A6069;
   --line:rgba(22,26,32,.12);
-  --gold:#B8862F;
-  --gold-ink:#FFFFFF;
+  --brand:#0B7A4B;
+  --brand-ink:#FFFFFF;
   --chip:#F1EEE8;
   --wa:#1F8F4E;
   --shadow:0 10px 30px rgba(20,22,26,.22);
-  --font-display:'Reem Kufi','IBM Plex Sans Arabic',system-ui,sans-serif;
+  --font-display:'IBM Plex Sans Arabic',system-ui,-apple-system,'Segoe UI',sans-serif;
   --font-body:'IBM Plex Sans Arabic',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --glass:rgba(24,27,32,.9);--glass-solid:#1E2228;--ink:#F2EFEA;--ink-2:#A9AEB6;--line:rgba(255,255,255,.12);
-  --gold:#D7A851;--gold-ink:#1A1408;--chip:#2A2E35;--wa:#2FA864;--shadow:0 10px 30px rgba(0,0,0,.5);color-scheme:dark}}
+  --brand:#3DBB82;--brand-ink:#04140C;--chip:#2A2E35;--wa:#2FA864;--shadow:0 10px 30px rgba(0,0,0,.5);color-scheme:dark}}
 :root[data-theme="dark"]{
   --glass:rgba(24,27,32,.9);--glass-solid:#1E2228;--ink:#F2EFEA;--ink-2:#A9AEB6;--line:rgba(255,255,255,.12);
-  --gold:#D7A851;--gold-ink:#1A1408;--chip:#2A2E35;--wa:#2FA864;--shadow:0 10px 30px rgba(0,0,0,.5);color-scheme:dark}
+  --brand:#3DBB82;--brand-ink:#04140C;--chip:#2A2E35;--wa:#2FA864;--shadow:0 10px 30px rgba(0,0,0,.5);color-scheme:dark}
+/* brand colour options (team is choosing; picker on the listings page) */
+:root[data-brand="blue"]{--brand:#1F4FD8;--brand-ink:#FFFFFF}
+:root[data-brand="clay"]{--brand:#B4471C;--brand-ink:#FFFFFF}
+@media (prefers-color-scheme: dark){
+  :root[data-brand="blue"]:not([data-theme="light"]){--brand:#7598FF;--brand-ink:#08112C}
+  :root[data-brand="clay"]:not([data-theme="light"]){--brand:#E8875C;--brand-ink:#1E0B03}}
+:root[data-theme="dark"][data-brand="blue"]{--brand:#7598FF;--brand-ink:#08112C}
+:root[data-theme="dark"][data-brand="clay"]{--brand:#E8875C;--brand-ink:#1E0B03}
 [hidden]{display:none!important}
 html,body{height:100%;overflow:hidden}
 body{margin:0;background:var(--stage);color:var(--ink);font-family:var(--font-body);font-size:15px;direction:rtl;
   -webkit-tap-highlight-color:transparent;font-variant-numeric:tabular-nums}
 button{font-family:inherit;color:inherit;cursor:pointer}
-button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 #stage{position:fixed;inset:0;touch-action:none}
 #stage canvas{display:block;width:100%;height:100%}
 .glass{background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:var(--shadow)}
@@ -41,7 +50,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offse
   padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 0;pointer-events:none}
 #top>*{pointer-events:auto}
 #brand{font-family:var(--font-display);font-weight:700;font-size:19px;padding:7px 14px;border-radius:12px;border:0}
-#brand em{font-style:normal;color:var(--gold)}
+#brand em{font-style:normal;color:var(--brand)}
 #topTitle{min-width:0;flex:1;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:9px 14px;border-radius:12px}
 .iconBtn{border:1px solid var(--line);border-radius:12px;height:40px;padding:0 12px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
 .iconBtn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
@@ -64,7 +73,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offse
   border-radius:14px;padding:8px 13px;text-align:right;line-height:1.3}
 .roomChip b{display:block;font-size:13.5px;font-weight:600}
 .roomChip small{font-size:11.5px;color:var(--ink-2)}
-.roomChip[aria-current="true"]{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.roomChip[aria-current="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
 .roomChip[aria-current="true"] small{color:inherit;opacity:.85}
 #wAgent{margin-top:6px;font-size:13px;color:var(--ink-2)}
 #wAgent b{color:var(--ink)}
@@ -74,28 +83,34 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offse
 #welcome{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;justify-content:flex-end;
   padding:0 16px calc(env(safe-area-inset-bottom,0px) + 18px);background:linear-gradient(to top,rgba(10,12,16,.7),rgba(10,12,16,0) 60%)}
 #wCard{max-width:560px;width:100%;margin-inline:auto;border-radius:24px;padding:22px;box-sizing:border-box}
-#wEyebrow{font-size:12px;color:var(--gold);font-weight:600}
+#wEyebrow{font-size:12px;color:var(--brand);font-weight:600}
 #wName{font-family:var(--font-display);font-weight:700;font-size:clamp(26px,6vw,34px);line-height:1.2;margin:6px 0 4px;text-wrap:balance}
 #wLoc{color:var(--ink-2);font-size:14px}
-#wPrice{margin-top:10px;font-size:26px;font-weight:700;color:var(--gold)}
+#wPrice{margin-top:10px;font-size:26px;font-weight:700;color:var(--brand)}
 #wPrice small{font-size:14px;color:var(--ink-2);font-weight:500;margin-inline-start:4px}
 #wFacts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
 .fact{background:var(--chip);border-radius:14px;padding:10px 8px;text-align:center;min-width:0}
 .fact b{display:block;font-size:18px;font-weight:700}
 .fact small{font-size:11.5px;color:var(--ink-2)}
 #wMore{display:block;margin-top:12px;text-align:center;font-size:13.5px;color:var(--ink-2);background:none;border:0;width:100%;padding:6px}
-#wMore b{color:var(--gold)}
+#wMore b{color:var(--brand)}
 #backBtn{flex:0 0 auto}
 /* listings: all properties, filtered by city → area → neighbourhood */
 #list{position:fixed;inset:0;z-index:35;overflow-y:auto;background:var(--glass-solid);-webkit-overflow-scrolling:touch}
-#listIn{max-width:1100px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 24px)}
+#listIn{max-width:1100px;margin:0 auto;padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 24px)}
+#listTop{background:var(--brand);color:var(--brand-ink);padding-top:env(safe-area-inset-top,0px)}
+#listTop>div{max-width:1100px;margin:0 auto;padding:18px 16px 18px}
 #listHead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-#listHead .mark{font-family:var(--font-display);font-size:26px;font-weight:700}
-#listHead .mark em{font-style:normal;color:var(--gold)}
-#listHead p{margin:0;color:var(--ink-2);font-size:14px}
-#filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:16px}
-#filters label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink-2);min-width:0}
-#filters select{width:100%;min-width:0;border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:12px;padding:10px;font:inherit;font-size:14px}
+#listHead .mark{font-size:26px;font-weight:700}
+#listHead .mark em{font-style:normal;opacity:.8}
+#listHead p{margin:0;font-size:14px;opacity:.9}
+#filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
+#filters label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;min-width:0}
+#filters select{width:100%;min-width:0;border:0;background:var(--glass-solid);color:var(--ink);border-radius:12px;padding:11px 10px;font:inherit;font-size:14.5px}
+#filters select:disabled{opacity:.6}
+#brandPick{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:28px;font-size:12.5px;color:var(--ink-2)}
+#brandPick button{width:30px;height:30px;border-radius:50%;border:3px solid var(--glass-solid);box-shadow:0 0 0 1px var(--line)}
+#brandPick button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
 #types{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 #types button{border:1px solid var(--line);background:var(--chip);border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600}
 #types button[aria-pressed="true"]{background:var(--ink);color:var(--glass-solid);border-color:var(--ink)}
@@ -106,7 +121,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offse
 .card .ph .tag{position:absolute;top:10px;right:10px;background:rgba(22,26,32,.78);color:#fff;font-size:12px;font-weight:600;padding:4px 9px;border-radius:9px}
 .card .ph .tag.d{right:auto;left:10px;background:rgba(255,255,255,.9);color:#161A20}
 .card .bd{padding:12px 14px 14px}
-.card .pr{font-size:19px;font-weight:700;color:var(--gold)}
+.card .pr{font-size:19px;font-weight:700;color:var(--brand)}
 .card .pr small{font-size:12.5px;color:var(--ink-2);font-weight:500;margin-inline-start:3px}
 .card .nm{font-weight:600;font-size:15.5px;margin-top:2px}
 .card .loc{font-size:13px;color:var(--ink-2);margin-top:2px}
@@ -115,7 +130,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offse
 #empty{padding:40px 0;text-align:center;color:var(--ink-2)}
 #wBtns{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
 .btn{flex:1;min-width:140px;border-radius:14px;padding:14px 16px;font-size:15.5px;font-weight:700;border:1px solid var(--line);background:var(--glass-solid)}
-.btn.primary{background:var(--gold);color:var(--gold-ink);border-color:var(--gold)}
+.btn.primary{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
 
 .sheet{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;background:var(--glass-solid);
   padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 14px)}
@@ -137,7 +152,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offse
 
 #mini{position:fixed;left:16px;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:19;width:118px;height:118px;border-radius:16px;padding:0;overflow:hidden}
 #mini canvas{display:block;width:100%;height:100%}
-#gyroBtn[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+#gyroBtn[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
 #toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 96px);z-index:45;
   background:var(--ink);color:var(--glass-solid);padding:10px 16px;border-radius:14px;font-size:13.5px;max-width:calc(100% - 32px);
   text-align:center;opacity:0;transition:opacity .3s;pointer-events:none}
@@ -145,13 +160,14 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offse
 #fade{position:fixed;inset:0;z-index:25;background:#0E1013;opacity:0;pointer-events:none;transition:opacity .25s ease}
 #loading{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:var(--stage);color:#F2EFEA;text-align:center;padding-inline:16px}
 #loading .mark{font-family:var(--font-display);font-size:30px;font-weight:700}
-#loading .mark em{font-style:normal;color:#D7A851}
+#loading .mark em{font-style:normal;color:var(--brand)}
 #loading p{opacity:.75;margin:8px 0 0}
 @media (max-width:520px){#wFacts{grid-template-columns:repeat(2,1fr)}#filters{grid-template-columns:repeat(2,minmax(0,1fr))}#backBtn span{display:none}#mini{width:96px;height:96px}#gyroBtn span{display:none}#capName{font-size:18px}#topTitle{display:none}
   .waBtn span,#planBtn span{display:none}.waBtn{padding:11px}}
 @media (prefers-reduced-motion: reduce){#fade,#toast{transition:none}}
 </style>
 
+<script>try{const b=localStorage.getItem('sb-brand');if(b&&b!=='green')document.documentElement.dataset.brand=b;}catch(e){}</script>
 <div id="stage" aria-label="صورة 360 درجة للعقار"></div>
 
 <header id="top" hidden>
@@ -211,7 +227,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offse
 </section>
 
 <section id="list" hidden aria-label="العقارات">
-  <div id="listIn">
+  <div id="listTop"><div>
     <div id="listHead"><div class="mark">شوف <em>بيت</em></div><p>عقارات تقدر تتجول فيها بـ 360° قبل لا تروح لها</p></div>
     <div id="filters">
       <label>المدينة<select id="fCity"></select></label>
@@ -219,10 +235,16 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offse
       <label>الحي<select id="fDist"></select></label>
       <label>الترتيب<select id="fSort"><option value="new">الأحدث</option><option value="lo">السعر: الأقل</option><option value="hi">السعر: الأعلى</option></select></label>
     </div>
+  </div></div>
+  <div id="listIn">
     <div id="types" role="group" aria-label="نوع العقار"></div>
     <div id="count"></div>
     <div id="cards"></div>
     <div id="empty" hidden>لا توجد عقارات بهذه الاختيارات حالياً</div>
+    <div id="brandPick">لون الهوية (للتجربة):
+      <button data-b="green" style="background:#0B7A4B" aria-label="أخضر"></button>
+      <button data-b="blue" style="background:#1F4FD8" aria-label="أزرق"></button>
+      <button data-b="clay" style="background:#B4471C" aria-label="طيني"></button></div>
   </div>
 </section>
 
@@ -241,6 +263,7 @@ const $=s=>document.querySelector(s);
 const fmt=n=>(Math.round(n*100)/100).toLocaleString('ar-EG',{maximumFractionDigits:2});
 const fmt1=n=>(Math.round(n*10)/10).toLocaleString('ar-EG',{maximumFractionDigits:1});
 const fmtP=n=>Number(n||0).toLocaleString('ar-EG');
+const uniq=a=>[...new Set(a.filter(Boolean))].sort((x,y)=>x.localeCompare(y,'ar'));
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let toastT=null;
 function toast(m,ms=2800){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),ms);}
@@ -252,24 +275,34 @@ let TLIST=null;try{const r=await fetch('tours/index.json',{cache:'no-cache'});if
 const TID=(new URLSearchParams(location.search).get('tour')||location.hash.slice(1)).trim();
 addEventListener('hashchange',()=>location.reload());
 const goList=()=>{if(new URLSearchParams(location.search).get('tour')){location.href=location.pathname;return;}location.hash='';location.reload();};
-if(!TID){showListings();$('#loading').hidden=true;await new Promise(()=>{});} /* listings only: the tour code below never runs */
+if(!TID){await showListings();$('#loading').hidden=true;await new Promise(()=>{});} /* listings only: the tour code below never runs */
 if(!/^[a-z0-9][a-z0-9_-]{0,63}$/.test(TID))fail('رابط الجولة غير صالح.');
 
 /* ============ listings: city → area → neighbourhood, type, price ============ */
-function showListings(){
+async function showListings(){
   const L=(Array.isArray(TLIST)?TLIST:[]).filter(o=>o&&o.id&&!o.hidden);
+  let LOC=[];try{const r=await fetch('locations.json',{cache:'no-cache'});if(r.ok)LOC=(await r.json()).cities||[];}catch(e){}
+  const cityOf=n=>LOC.find(c=>c.name===n);
+  const areasOf=n=>{const c=cityOf(n);return uniq([...(c&&c.areas||[]).map(a=>a.name),...L.filter(o=>o.city===n).map(o=>o.area)]);};
+  const distsOf=(n,a)=>{const c=cityOf(n);let d=[];if(c){if(c.districts)d=d.concat(c.districts);(c.areas||[]).forEach(x=>{if(!a||x.name===a)d=d.concat(x.districts||[]);});}
+    return uniq([...d,...L.filter(o=>o.city===n&&(!a||o.area===a)).map(o=>o.district)]);};
+  const pb=$('#brandPick');const curB=()=>document.documentElement.dataset.brand||'green';
+  const markB=()=>[...pb.querySelectorAll('button')].forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.b===curB())));markB();
+  pb.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.b==='green')delete document.documentElement.dataset.brand;else document.documentElement.dataset.brand=b.dataset.b;
+    try{localStorage.setItem('sb-brand',b.dataset.b);}catch(e){}markB();};
   document.title='شوف بيت · عقارات بجولة 360°';$('#list').hidden=false;
   const st={city:'',area:'',dist:'',type:'',sort:'new'};
   try{Object.assign(st,JSON.parse(localStorage.getItem('sb-filters')||'{}'));}catch(e){}
-  const uniq=a=>[...new Set(a.filter(Boolean))].sort((x,y)=>x.localeCompare(y,'ar'));
+
   function fill(sel,vals,cur,all){sel.innerHTML=`<option value="">${all}</option>`+vals.map(v=>`<option${v===cur?' selected':''}>${esc(v)}</option>`).join('');sel.disabled=!vals.length;}
   function render(){
-    const cities=uniq(L.map(o=>o.city));if(st.city&&!cities.includes(st.city))st.city='';
+    /* big cities first (data order), then any other city a listing uses */
+    const cities=[...new Set([...LOC.map(c=>c.name),...uniq(L.map(o=>o.city))])];if(st.city&&!cities.includes(st.city))st.city='';
     const inCity=L.filter(o=>!st.city||o.city===st.city);
-    const areas=uniq(inCity.map(o=>o.area));if(st.area&&!areas.includes(st.area))st.area='';
+    const areas=st.city?areasOf(st.city):[];if(st.area&&!areas.includes(st.area))st.area='';
     const inArea=inCity.filter(o=>!st.area||o.area===st.area);
-    const dists=uniq(inArea.map(o=>o.district));if(st.dist&&!dists.includes(st.dist))st.dist='';
-    fill($('#fCity'),cities,st.city,'كل المدن');fill($('#fArea'),areas,st.area,'كل المناطق');fill($('#fDist'),dists,st.dist,'كل الأحياء');$('#fSort').value=st.sort;
+    const dists=st.city?distsOf(st.city,st.area):[];if(st.dist&&!dists.includes(st.dist))st.dist='';
+    $('#fCity').innerHTML='';fill($('#fCity'),cities,st.city,'كل المدن');fill($('#fArea'),areas,st.area,'كل المناطق');fill($('#fDist'),dists,st.dist,'كل الأحياء');$('#fSort').value=st.sort;
     const inDist=inArea.filter(o=>!st.dist||o.district===st.dist);
     const types=uniq(inDist.map(o=>o.type));if(st.type&&!types.includes(st.type))st.type='';
     $('#types').innerHTML=['',...types].map(t=>`<button data-t="${esc(t)}" aria-pressed="${t===st.type}">${t?esc(t):'الكل'}</button>`).join('');
@@ -277,6 +310,7 @@ function showListings(){
     if(st.sort!=='new')rs=rs.slice().sort((a,b)=>((a.price||Infinity)-(b.price||Infinity))*(st.sort==='lo'?1:-1));
     $('#count').textContent=rs.length?fmtP(rs.length)+(rs.length===1?' عقار':' عقارات'):'';
     $('#empty').hidden=!!rs.length;
+    $('#empty').textContent=st.dist?`لا توجد عقارات في حي ${st.dist} حالياً`:st.area||st.city?`لا توجد عقارات في ${st.area||st.city} حالياً`:'لا توجد عقارات بهذه الاختيارات حالياً';
     $('#cards').innerHTML=rs.map(o=>{const loc=[o.district&&'حي '+o.district,o.area,o.city].filter(Boolean).join('، ');
       const ft=[o.bedrooms&&`<span><b>${fmtP(o.bedrooms)}</b> غرف نوم</span>`,o.bathrooms&&`<span><b>${fmtP(o.bathrooms)}</b> دورات مياه</span>`,o.size&&`<span><b>${fmtP(o.size)}</b> م²</span>`,o.spots&&`<span><b>${fmtP(o.spots)}</b> مكان بـ 360°</span>`].filter(Boolean).join('');
       return`<button class="card" data-id="${esc(o.id)}"><div class="ph" style="background-image:url('${esc(o.cover||'')}');background-position:${Number(o.coverX??50)}% 50%">
@@ -330,7 +364,7 @@ const hotGroup=new THREE.Group();scene.add(hotGroup);
 function hotTexture(label,up){
   const c=document.createElement('canvas');c.width=512;c.height=320;const g=c.getContext('2d');
   g.fillStyle='rgba(255,255,255,.95)';g.beginPath();g.arc(256,110,74,0,7);g.fill();
-  g.lineWidth=10;g.strokeStyle='#B8862F';g.stroke();
+  g.lineWidth=10;g.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--brand').trim()||'#0B7A4B';g.stroke();
   g.strokeStyle='#161A20';g.lineWidth=16;g.lineCap='round';g.lineJoin='round';g.beginPath();
   if(up){g.moveTo(214,128);g.lineTo(256,86);g.lineTo(298,128);}else{g.moveTo(214,96);g.lineTo(256,138);g.lineTo(298,96);g.moveTo(256,138);g.lineTo(256,138);}
   g.stroke();
@@ -448,7 +482,7 @@ function drawPlan(){
   const rs=P.rooms.filter(r=>r.floor===planLevel);if(!rs.length)return;
   const x0=Math.min(...rs.map(r=>r.x))-0.3,x1=Math.max(...rs.map(r=>r.x+r.w))+0.3,z0=Math.min(...rs.map(r=>r.y))-0.3,z1=Math.max(...rs.map(r=>r.y+r.l))+0.3;
   const s=Math.min(W/(x1-x0),H/(z1-z0)),ox=(W-(x1-x0)*s)/2-x0*s,oz=(H-(z1-z0)*s)/2-z0*s;planXf={s,ox,oz};
-  const gold=getComputedStyle(document.documentElement).getPropertyValue('--gold').trim();
+  const gold=getComputedStyle(document.documentElement).getPropertyValue('--brand').trim();
   rs.forEach(r=>{const x=ox+r.x*s,y=oz+r.y*s,w=r.w*s,h=r.l*s;const here=current&&current.roomId===r.id;
     pctx.fillStyle=r.open?'#E2EBD3':r.structural?'#E1D9C9':'#EFE8DC';pctx.fillRect(x,y,w,h);
     pctx.lineWidth=here?3:1.5;pctx.strokeStyle=here?gold:'#2A2E35';pctx.strokeRect(x,y,w,h);
@@ -498,7 +532,7 @@ function drawMini(){
   const fl=current.floor??0,rs=MAP.rooms.filter(r=>(r.floor??0)===fl);
   const x0=Math.min(...rs.map(r=>r.x)),x1=Math.max(...rs.map(r=>r.x+r.w)),z0=Math.min(...rs.map(r=>r.y)),z1=Math.max(...rs.map(r=>r.y+r.l));
   const pad=9,s=Math.min((W-2*pad)/(x1-x0),(H-2*pad)/(z1-z0)),ox=(W-(x1-x0)*s)/2-x0*s,oz=(H-(z1-z0)*s)/2-z0*s;
-  const css=getComputedStyle(document.documentElement),gold=css.getPropertyValue('--gold').trim(),ink=css.getPropertyValue('--ink').trim();
+  const css=getComputedStyle(document.documentElement),gold=css.getPropertyValue('--brand').trim(),ink=css.getPropertyValue('--ink').trim();
   rs.forEach(r=>{const here=r===sp.r;mctx.globalAlpha=here?0.32:0.1;mctx.fillStyle=here?gold:ink;mctx.fillRect(ox+r.x*s,oz+r.y*s,r.w*s,r.l*s);
     mctx.globalAlpha=0.55;mctx.strokeStyle=ink;mctx.lineWidth=1;mctx.strokeRect(ox+r.x*s+.5,oz+r.y*s+.5,r.w*s-1,r.l*s-1);});
   mctx.globalAlpha=1;const cx=ox+sp.x*s,cy=oz+sp.y*s;
@@ -546,3 +580,5 @@ await go(TOUR.start||TOUR.panos[0].id,{instant:true});
 $('#welcome').hidden=false;$('#loading').hidden=true;
 requestAnimationFrame(frame);
 </script>
+
+</body></html>

@@ -1,10 +1,34 @@
 [
-  {"id": "sample-flat", "name": "شقة تجريبية", "type": "شقة", "city": "اختبار داخلي",
-   "spots": 5, "cover": "tours/sample-flat/living.jpg", "coverX": 50,
-   "note": "صور 360° حقيقية من موقع صور عام، لعرض الفكرة"},
-  {"id": "townhouse-f", "name": "تاون هاوس F — وسطي", "type": "تاون هاوس", "city": "الرياض",
-   "price": 1450000, "bedrooms": 3, "bathrooms": 3, "spots": 12, "demo": true,
-   "cover": "tours/townhouse-f/1.jpg", "coverX": 50},
-  {"id": "real-photo-test", "name": "غرفة فندقية", "type": "غرفة", "city": "اختبار داخلي",
-   "spots": 1, "cover": "tours/real-photo-test/room.jpg", "coverX": 50}
+  {
+    "id": "sample-flat",
+    "name": "شقة تجريبية",
+    "type": "شقة",
+    "city": "اختبار داخلي",
+    "spots": 5,
+    "cover": "tours/sample-flat/living.jpg",
+    "coverX": 50,
+    "note": "صور 360° حقيقية من موقع صور عام، لعرض الفكرة"
+  },
+  {
+    "id": "townhouse-f",
+    "name": "تاون هاوس F — وسطي",
+    "type": "تاون هاوس",
+    "city": "الرياض",
+    "price": 1450000,
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "spots": 12,
+    "demo": true,
+    "cover": "tours/townhouse-f/1.jpg",
+    "coverX": 50
+  },
+  {
+    "id": "real-photo-test",
+    "name": "غرفة فندقية",
+    "type": "غرفة",
+    "city": "اختبار داخلي",
+    "spots": 1,
+    "cover": "tours/real-photo-test/room.jpg",
+    "coverX": 50
+  }
 ]

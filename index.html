@@ -301,6 +301,7 @@ svg.leaflet-zoom-animated { will-change: transform; }
 #embedCode{width:100%;box-sizing:border-box;margin:8px 0;font:12px ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--chip);color:var(--ink);resize:none}
 #shareUrl{font-size:12.5px;color:var(--ink-2);word-break:break-all;max-width:320px;user-select:all}
 
+#skipArr{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 178px);z-index:21;border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-size:14px;font-weight:600;color:var(--ink)}
 #mini{position:fixed;left:16px;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:19;width:118px;height:118px;border-radius:16px;padding:0;overflow:hidden}
 #mini canvas{display:block;width:100%;height:100%}
 #gyroBtn[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
@@ -340,6 +341,7 @@ svg.leaflet-zoom-animated { will-change: transform; }
     <svg viewBox="0 0 24 24"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg><span>شارك</span>
   </button>
 </header>
+<button id="skipArr" class="glass" hidden>تخطّى ←</button>
 <button id="mini" class="glass" aria-label="أنت هنا: افتح المخطط" hidden><canvas id="miniCv"></canvas></button>
 <div id="demo" class="glass" hidden>عرض تجريبي: صور 360° من نموذج ثلاثي الأبعاد، وليست صوراً حقيقية</div>
 
@@ -563,12 +565,15 @@ let renderer;
 try{renderer=new THREE.WebGLRenderer({antialias:true});}catch(e){fail('هذا المتصفح لا يدعم العرض ثلاثي الأبعاد.');}
 renderer.setPixelRatio(Math.min(2,devicePixelRatio||1));stage.appendChild(renderer.domElement);
 const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(75,1,0.1,200);camera.rotation.order='YXZ';
-const panoMat=new THREE.ShaderMaterial({uniforms:{map:{value:null}},side:THREE.BackSide,depthWrite:false,toneMapped:false,
+const panoMat=new THREE.ShaderMaterial({uniforms:{map:{value:null},map2:{value:null},mixv:{value:0},off2:{value:0}},side:THREE.BackSide,depthWrite:false,toneMapped:false,
   vertexShader:'varying vec3 vDir;void main(){vDir=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
   /* standard 360° photo: centre = straight ahead (-z), right half = turning right, top = up */
-  fragmentShader:`uniform sampler2D map;varying vec3 vDir;
-    void main(){vec3 d=normalize(vDir);float lon=atan(d.x,-d.z);float lat=asin(clamp(d.y,-1.0,1.0));
-      gl_FragColor=texture2D(map,vec2(lon/6.28318530718+0.5,lat/3.14159265359+0.5));
+  /* map2/mixv: the next room blends in while you move; off2 turns it so its arrival view lines up with yours */
+  fragmentShader:`uniform sampler2D map;uniform sampler2D map2;uniform float mixv;uniform float off2;varying vec3 vDir;
+    void main(){vec3 d=normalize(vDir);float lon=atan(d.x,-d.z);float v=asin(clamp(d.y,-1.0,1.0))/3.14159265359+0.5;
+      vec4 c=texture2D(map,vec2(lon/6.28318530718+0.5,v));
+      if(mixv>0.0){c=mix(c,texture2D(map2,vec2(fract((lon+off2)/6.28318530718+0.5),v)),mixv);}
+      gl_FragColor=c;
       #include <colorspace_fragment>
     }`});
 scene.add(new THREE.Mesh(new THREE.SphereGeometry(50,64,40),panoMat));
@@ -615,29 +620,39 @@ const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let tween=null,busy=false;
 function tweenLook(to,ms){return new Promise(res=>{if(REDUCED){Object.assign(look,to);return res();}
   let dy=((to.yaw-look.yaw)%360+540)%360-180;tween={from:{yaw:look.yaw,pitch:look.pitch,fov:camera.fov},to:{yaw:look.yaw+dy,pitch:to.pitch,fov:to.fov},t0:performance.now(),ms,res};});}
-async function go(id,{instant=false}={}){
+let blending=false;
+function blendTo(tex,newYaw,ms){return new Promise(res=>{const u=panoMat.uniforms;u.map2.value=tex;
+  u.off2.value=THREE.MathUtils.degToRad(newYaw-look.yaw);blending=true;const t0=performance.now();
+  const step=now=>{const k=Math.min(1,(now-t0)/ms);u.mixv.value=k*k*(3-2*k);
+    if(k<1)return requestAnimationFrame(step);
+    u.map.value=tex;u.mixv.value=0;u.map2.value=null;look.yaw=newYaw;blending=false;res();};
+  requestAnimationFrame(step);});}
+async function go(id,{instant=false,from=null}={}){
   const p=panoById.get(String(id));if(!p||busy)return;busy=true;
   const f=$('#fade'),normal=userZoomed?look.fov:fitFov();
-  const fwd=current&&!instant?(current.links||[]).find(l=>String(l.to)===String(p.id)):null;
+  const fwd=current&&!instant&&!from?(current.links||[]).find(l=>String(l.to)===String(p.id)):null;
+  const smooth=!instant&&!REDUCED&&!!(fwd||from==='arrival');
+  stopArrival();
   const prev=p.preview?loadTex(p,'prev'):null;if(prev)prev.catch(()=>{});const full=loadTex(p);full.catch(()=>{});
   if(!instant){
     /* walk in: turn to the doorway and move towards it, then fade into the next room */
-    if(fwd){f.style.transition='opacity .22s ease';setTimeout(()=>f.style.opacity='1',300);await tweenLook({yaw:fwd.yaw,pitch:-4,fov:Math.max(38,normal*0.5)},520);}
+    if(smooth){hotGroup.visible=false;if(fwd)await tweenLook({yaw:fwd.yaw,pitch:-4,fov:Math.max(38,normal*0.55)},520);}
     else{f.style.opacity='1';await new Promise(r=>setTimeout(r,260));}}
   let shown=texReady.get(p.id+'|full');
   if(!shown){try{shown=prev?await prev:await full;}catch(e){try{shown=await full;}catch(e2){}}}
-  if(!shown){toast('تعذّر تحميل صورة هذه الغرفة');f.style.opacity='0';look.fov=normal;busy=false;return;}
-  panoMat.uniforms.map.value=shown;
+  if(!shown){toast('تعذّر تحميل صورة هذه الغرفة');f.style.opacity='0';look.fov=normal;hotGroup.visible=true;busy=false;return;}
   if(!texReady.has(p.id+'|full'))full.then(t=>{if(current===p)panoMat.uniforms.map.value=t;},()=>{});
   /* keep facing the direction we walked in, unless the room sets its own start */
   /* arriving: use the link's "face" if set; keep the walking direction only when all photos face the
      same way (tour.aligned, e.g. renders from our 3D model); otherwise the room's own start view */
   const back=current&&!instant?(current.links||[]).find(l=>String(l.to)===String(p.id)):null;
-  look.yaw=back&&back.face!=null?back.face:back&&TOUR.aligned?back.yaw:(p.yaw||0);
+  const newYaw=from==='arrival'?(TOUR.arrival.face??p.yaw??0):back&&back.face!=null?back.face:back&&TOUR.aligned?back.yaw:(p.yaw||0);
+  if(smooth){look.fov=normal*0.8;await blendTo(shown,newYaw,420);hotGroup.visible=true;}
+  else{panoMat.uniforms.map.value=shown;look.yaw=newYaw;hotGroup.visible=true;}
   look.pitch=-5;current=p;buildHotspots(p);ui();gyroRebase();
   (p.links||[]).forEach(l=>{const t=panoById.get(String(l.to));if(t)preload(t);});
   /* arrive a little zoomed in and settle back to the wide view: feels like stepping in */
-  if(!instant&&!REDUCED){camera.fov=look.fov=normal*0.8;camera.updateProjectionMatrix();requestAnimationFrame(()=>{look.fov=normal;});}else look.fov=normal;
+  if(!instant&&!REDUCED&&!smooth){camera.fov=look.fov=normal*0.8;camera.updateProjectionMatrix();requestAnimationFrame(()=>{look.fov=normal;});}else look.fov=normal;
   requestAnimationFrame(()=>{f.style.transition='';f.style.opacity='0';});busy=false;
 }
 
@@ -658,6 +673,24 @@ cv.addEventListener('pointerup',e=>{ptr.delete(e.pointerId);if(ptr.size<2)pinch=
   if(ptr.size===0)down=null;});
 cv.addEventListener('pointercancel',e=>{ptr.delete(e.pointerId);down=null;pinch=null;});
 cv.addEventListener('wheel',e=>{e.preventDefault();userZoomed=true;look.fov=Math.min(120,Math.max(40,look.fov*(e.deltaY>0?1.06:0.94)));},{passive:false});
+
+/* ============ arrival: a 360° video walking in from the street (tour.json "arrival") ============
+   {"video": "tours/<id>/arrival.mp4", "to": "<photo id it ends in>", "yaw": 0, "face": 0, "label": "الطريق إلى البيت"}
+   The buyer can look around while it plays; at the end it blends into the "to" photo. */
+const ARR=TOUR.arrival&&TOUR.arrival.video&&panoById.has(String(TOUR.arrival.to))?TOUR.arrival:null;
+let arrVideo=null,arrTex=null,arrPending=false;
+function stopArrival(){if(!arrVideo)return;arrVideo.onended=null;arrVideo.pause();$('#skipArr').hidden=true;}
+function playArrival(){
+  if(!ARR)return false;arrPending=false;
+  if(!arrVideo){arrVideo=document.createElement('video');Object.assign(arrVideo,{muted:true,playsInline:true,preload:'auto',crossOrigin:'anonymous'});
+    arrVideo.setAttribute('playsinline','');arrVideo.setAttribute('muted','');arrVideo.src=ARR.video;
+    arrTex=new THREE.VideoTexture(arrVideo);arrTex.colorSpace=THREE.SRGBColorSpace;arrTex.generateMipmaps=false;arrTex.minFilter=THREE.LinearFilter;}
+  arrVideo.currentTime=0;
+  const toRoom=()=>{stopArrival();go(ARR.to,{from:'arrival'});};
+  arrVideo.onended=toRoom;arrVideo.onerror=()=>{toast('تعذّر تشغيل مشهد الوصول');toRoom();};
+  arrVideo.play().then(()=>{panoMat.uniforms.map.value=arrTex;look.yaw=ARR.yaw||0;look.pitch=-3;hotGroup.visible=false;
+    current={id:'__arrival',name:ARR.label||'الطريق إلى البيت',links:[]};ui();$('#skipArr').hidden=false;},()=>toRoom());
+  $('#skipArr').onclick=toRoom;return true;}
 
 /* ============ UI ============ */
 function dimsOf(p){const r=p.roomId!=null?roomById.get(p.roomId):null;
@@ -691,6 +724,8 @@ function buildUI(){
     facts.push(TOUR.area?[fmtP(TOUR.area),'م² (حسب الصك)']:[fmtP(Math.round(inner)),'م² داخلية'],[fmtP(rs.filter(r=>kindOf(r.name)==='bed').length),'غرف نوم'],[fmtP(rs.filter(r=>kindOf(r.name)==='bath').length),'دورات مياه']);}
   facts.push([fmtP(TOUR.panos.length),'مكان بـ 360°']);
   $('#wFacts').innerHTML=facts.map(([b,s])=>`<div class="fact"><b>${esc(b)}</b><small>${esc(s)}</small></div>`).join('');
+  if(ARR){const b=document.createElement('button');b.className='roomChip';b.setAttribute('role','listitem');b._id='__arrival';
+    b.innerHTML=`<b>▶ ${esc(ARR.label||'الطريق إلى البيت')}</b><small>فيديو 360°</small>`;b.onclick=()=>{if(!busy)playArrival();};$('#rail').appendChild(b);}
   TOUR.panos.forEach(p=>{const b=document.createElement('button');b.className='roomChip';b.setAttribute('role','listitem');b._id=String(p.id);
     const r=p.roomId!=null?roomById.get(p.roomId):null;
     b.innerHTML=`<b>${esc(p.name)}</b><small>${r?fmt1(r.w*r.l)+' م²':''}${r&&P&&new Set(TOUR.panos.map(x=>x.floor)).size>1?' · '+esc(levelName(p.floor)):''}</small>`;
@@ -728,7 +763,8 @@ $('#wStart').onclick=()=>{const again=!!started||$('#wStart').dataset.seen;$('#w
   gyro.embedded=embedded;$('#gyroBtn').hidden=!('DeviceOrientationEvent' in window&&matchMedia('(pointer:coarse)').matches);
   if(!again&&canMotion()&&!gyro.on){let seen=null;try{seen=localStorage.getItem('sb-motion');}catch(e){}
     if(seen==='yes')gyroToggle(); /* already agreed: this tap lets the phone re-allow it without asking */
-    else if(seen!=='later')setTimeout(askMotion,700);}
+    else if(seen!=='later'){setTimeout(askMotion,700);if(ARR)arrPending=true;}}
+  if(!again&&ARR&&!arrPending)playArrival();
   if(!again&&!(canMotion()))setTimeout(()=>toast('اسحب للنظر حولك، واضغط على العلامات للتنقل بين الغرف',3800),500);};
 
 /* plan sheet: true sizes from the plan, dots where a 360° photo exists */
@@ -808,7 +844,7 @@ function onOrient(ev){if(ev.alpha==null)return;gyro.got=true;
   const R=THREE.MathUtils.degToRad,so=R((screen.orientation&&screen.orientation.angle)||window.orientation||0);
   _e.set(R(ev.beta),R(ev.alpha),-R(ev.gamma),'YXZ');_q.setFromEuler(_e).multiply(_qx).multiply(_qz.setFromAxisAngle(_z,-so));
   _e.setFromQuaternion(_q,'YXZ');gyro.raw={yaw:-THREE.MathUtils.radToDeg(_e.y),pitch:THREE.MathUtils.radToDeg(_e.x)};
-  if(!gyro.on||tween)return;look.yaw=gyro.raw.yaw+gyro.off;look.pitch=Math.max(-85,Math.min(85,gyro.raw.pitch));}
+  if(!gyro.on||tween||blending)return;look.yaw=gyro.raw.yaw+gyro.off;look.pitch=Math.max(-85,Math.min(85,gyro.raw.pitch));}
 function gyroRebase(){if(gyro.on&&gyro.raw)gyro.off=look.yaw-gyro.raw.yaw;}
 async function gyroToggle(){const b=$('#gyroBtn');
   if(gyro.embedded){toast('قريباً: حرّك الجوال للنظر حولك. تعمل على موقع شوف بيت، وليس داخل هذه المعاينة',3600);return;}
@@ -822,8 +858,8 @@ async function gyroToggle(){const b=$('#gyroBtn');
 /* our own ask first, so people know why the phone asks; the phone's prompt must come from a tap */
 const canMotion=()=>!$('#gyroBtn').hidden&&!gyro.embedded;
 function askMotion(){$('#motionAsk').hidden=false;$('#maYes').focus();}
-$('#maYes').onclick=()=>{$('#motionAsk').hidden=true;try{localStorage.setItem('sb-motion','yes');}catch(e){}gyroToggle();};
-$('#maNo').onclick=()=>{$('#motionAsk').hidden=true;try{localStorage.setItem('sb-motion','later');}catch(e){}toast('تقدر تفعّلها بأي وقت من زر الجوال فوق',2600);};
+$('#maYes').onclick=()=>{$('#motionAsk').hidden=true;if(arrPending)playArrival();try{localStorage.setItem('sb-motion','yes');}catch(e){}gyroToggle();};
+$('#maNo').onclick=()=>{$('#motionAsk').hidden=true;if(arrPending)playArrival();try{localStorage.setItem('sb-motion','later');}catch(e){}toast('تقدر تفعّلها بأي وقت من زر الجوال فوق',2600);};
 $('#gyroBtn').onclick=()=>{if(gyro.on||gyro.embedded)return gyroToggle();askMotion();};
 
 /* ============ frame loop ============ */

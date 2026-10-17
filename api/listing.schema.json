@@ -35,6 +35,7 @@
         "properties": {"code": {"type": "string", "pattern": "^[a-z0-9_-]{2,32}$"}, "name": {"type": "string"}, "whatsapp": {"type": "string"}}}
     },
     "license": {"type": "object", "properties": {"fal": {"type": "string"}, "ad": {"type": "string"}}},
+    "arrivalEndsAt": {"type": "integer", "minimum": 1, "description": "If a 360° arrival video (.mp4) is sent: the number of the photo it ends in. Default 1."},
     "rooms": {
       "type": "array",
       "description": "One name per photo, in the same order as the photos (the shooting list). Optional: the AI names them when missing.",

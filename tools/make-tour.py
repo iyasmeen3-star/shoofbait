@@ -3,7 +3,9 @@
     python3 make-tour.py <incoming folder> <tours folder>
 
 <incoming folder> holds listing.json (see api/listing.schema.json) and the 360° photos (.jpg/.jpeg),
-in shooting order by file name (1.jpg, 2.jpg … or the camera's own numbering).
+in shooting order by file name (1.jpg, 2.jpg … or the camera's own numbering), and optionally one
+360° arrival video (.mp4, street → door → first room; listing.json "arrivalEndsAt" = the photo number
+it ends in, default 1).
 Creates <tours folder>/<id>/ with the photos as 1.jpg, 2.jpg …, tour.json, small previews
 (optimize-photos.py), and adds or updates the listing card in <tours folder>/index.json.
 
@@ -59,11 +61,18 @@ def main(incoming, tours):
         shutil.copy(p, out / f'{i}.jpg')
         panos.append({'id': str(i), 'name': names[i - 1] if i <= len(names) and names[i - 1] else f'مكان {i}',
                       'image': f'tours/{tid}/{i}.jpg', 'yaw': 0, 'links': []})
+    videos = sorted(p for p in incoming.iterdir() if p.suffix.lower() == '.mp4')
+    arrival = None
+    if videos:
+        shutil.copy(videos[0], out / 'arrival.mp4')
+        end = int(L.get('arrivalEndsAt', 1))
+        arrival = {'video': f'tours/{tid}/arrival.mp4', 'to': str(min(max(end, 1), len(photos))),
+                   'label': 'الطريق إلى البيت'}
     loc = '، '.join(x for x in (L.get('district') and 'حي ' + L['district'], L.get('area'), L.get('city')) if x)
     tour = {'name': L['name'], 'location': loc, 'price': L.get('price', 0), 'area': L.get('size'),
             'agent': L['agent'], 'marketers': L.get('marketers', []), 'license': L.get('license', {}),
             'details': {**L.get('details', {}), **({'type': L['type']} if L.get('type') else {})},
-            'pin': L.get('pin'), 'start': '1', 'linked': False, 'panos': panos}
+            'pin': L.get('pin'), 'arrival': arrival, 'start': '1', 'linked': False, 'panos': panos}
     tour = {k: v for k, v in tour.items() if v not in (None, {}, [])} | {'panos': panos}
     (out / 'tour.json').write_text(json.dumps(tour, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     optimize.main(out)

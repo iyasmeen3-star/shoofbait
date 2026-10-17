@@ -329,7 +329,7 @@ svg.leaflet-zoom-animated { will-change: transform; }
 #loading .mark em{font-style:normal;color:var(--brand)}
 #loading p{opacity:.75;margin:8px 0 0}
 @media (max-width:520px){#wFacts{grid-template-columns:repeat(2,1fr)}#filters{grid-template-columns:repeat(2,minmax(0,1fr))}#backBtn span{display:none}#mini{width:96px;height:96px}#gyroBtn span{display:none}#capName{font-size:18px}#topTitle{display:none}
-  .waBtn span,#planBtn span,#infoBtn span{display:none}.waBtn{padding:11px}}
+  .waBtn span,#planBtn span,#infoBtn span,#dollBtn span{display:none}.waBtn{padding:11px}}
 @media (prefers-reduced-motion: reduce){#fade,#toast{transition:none}}
 </style>
 
@@ -358,6 +358,7 @@ svg.leaflet-zoom-animated { will-change: transform; }
     <div id="capText"><div id="capLevel"></div><div id="capName"></div><div id="capDims"></div></div>
     <a class="waBtn" id="waBtn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg><span>واتساب</span></a>
     <button class="iconBtn" id="infoBtn" aria-label="تفاصيل العقار"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg><span>التفاصيل</span></button>
+    <button class="iconBtn" id="dollBtn" hidden aria-label="مجسّم ثلاثي الأبعاد"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg><span>مجسّم 3D</span></button>
     <button class="iconBtn" id="planBtn" hidden><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 12h9V3M12 12v9"/></svg><span>المخطط</span></button>
   </section>
   <div id="rail" role="list" aria-label="الغرف"></div>
@@ -783,6 +784,8 @@ function buildUI(){
   ['#wMap','#mapBtn'].forEach(sel=>{$(sel).hidden=!mapUrl;if(mapUrl)$(sel).href=mapUrl;});
   $('#wInfo').onclick=$('#infoBtn').onclick=()=>{$('#info').hidden=false;};$('#infoClose').onclick=()=>$('#info').hidden=true;
   $('#planBtn').hidden=!P;
+  /* 3D overview built from the floor plan (same plan file) */
+  $('#dollBtn').hidden=!P;$('#dollBtn').onclick=()=>{location.href='tour.html?property='+encodeURIComponent(TOUR.property)+'&view=doll&back='+encodeURIComponent(location.pathname+location.hash);};
   $('#wMore').hidden=!(Array.isArray(TLIST)&&TLIST.length>1);$('#wMore').onclick=goList;
 }
 $('#wStart').onclick=()=>{const again=!!started||$('#wStart').dataset.seen;$('#wStart').dataset.seen='1';started=true;if(current&&current.id!=='__arrival')visited.add(String(current.id));$('#welcome').hidden=true;$('#top').hidden=false;$('#dock').hidden=false;ui();

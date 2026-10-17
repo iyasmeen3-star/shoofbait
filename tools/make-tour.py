@@ -12,7 +12,7 @@ Creates <tours folder>/<id>/ with the photos as 1.jpg, 2.jpg …, tour.json, sma
 Arrows between rooms are not added here: the AI linking step (ai-link, coming) does that. Until then
 buyers move with the room list at the bottom of the page.
 """
-import importlib.util, json, re, secrets, shutil, sys, time
+import importlib.util, json, re, secrets, shutil, subprocess, sys, time
 from pathlib import Path
 from PIL import Image
 
@@ -20,6 +20,19 @@ HERE = Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location('optimize_photos', HERE / 'optimize-photos.py')
 optimize = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(optimize)
+
+
+def shrink_video(src, dst):
+    """360° video for phones: 2880×1440 (2:1), H.264, 30 fps, no sound, starts playing before it has fully
+    downloaded. A 1-minute camera export (300–500 MB) comes out around 20–40 MB."""
+    if not shutil.which('ffmpeg'):
+        shutil.copy(src, dst)
+        print('warning: ffmpeg not found, video copied as is (GitHub refuses files over 100 MB)')
+        return
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', str(src), '-an', '-vf', 'scale=2880:1440,fps=30',
+                    '-c:v', 'libx264', '-preset', 'medium', '-crf', '26', '-pix_fmt', 'yuv420p',
+                    '-movflags', '+faststart', str(dst)], check=True)
+    print(f'video: {src.stat().st_size // 2**20} MB -> {dst.stat().st_size // 2**20} MB')
 
 
 def natural(p):
@@ -61,10 +74,10 @@ def main(incoming, tours):
         shutil.copy(p, out / f'{i}.jpg')
         panos.append({'id': str(i), 'name': names[i - 1] if i <= len(names) and names[i - 1] else f'مكان {i}',
                       'image': f'tours/{tid}/{i}.jpg', 'yaw': 0, 'links': []})
-    videos = sorted(p for p in incoming.iterdir() if p.suffix.lower() == '.mp4')
+    videos = sorted(p for p in incoming.iterdir() if p.suffix.lower() in ('.mp4', '.mov'))
     arrival = None
     if videos:
-        shutil.copy(videos[0], out / 'arrival.mp4')
+        shrink_video(videos[0], out / 'arrival.mp4')
         end = int(L.get('arrivalEndsAt', 1))
         arrival = {'video': f'tours/{tid}/arrival.mp4', 'to': str(min(max(end, 1), len(photos))),
                    'label': 'الطريق إلى البيت'}

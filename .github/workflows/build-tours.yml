@@ -26,6 +26,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install pillow==11.0.0
+      - name: ffmpeg (shrinks 360° videos for phones)
+        run: command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
       - name: Build each submission
         run: |
           shopt -s nullglob

@@ -302,6 +302,11 @@ svg.leaflet-zoom-animated { will-change: transform; }
 #shareUrl{font-size:12.5px;color:var(--ink-2);word-break:break-all;max-width:320px;user-select:all}
 
 #skipArr{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 178px);z-index:21;border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-size:14px;font-weight:600;color:var(--ink)}
+#walkRow{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;pointer-events:none}
+#walkRow>*{pointer-events:auto}
+#walkBtn{border:0;background:var(--brand);color:var(--brand-ink);border-radius:999px;padding:11px 20px;font-size:15px;font-weight:700;box-shadow:var(--shadow)}
+#autoBtn{border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-size:13.5px;font-weight:600;color:var(--ink)}
+#autoBtn[aria-pressed="true"]{background:var(--ink);color:var(--glass-solid)}
 #mini{position:fixed;left:16px;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:19;width:118px;height:118px;border-radius:16px;padding:0;overflow:hidden}
 #mini canvas{display:block;width:100%;height:100%}
 #gyroBtn[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
@@ -346,6 +351,7 @@ svg.leaflet-zoom-animated { will-change: transform; }
 <div id="demo" class="glass" hidden>عرض تجريبي: صور 360° من نموذج ثلاثي الأبعاد، وليست صوراً حقيقية</div>
 
 <div id="dock" hidden>
+  <div id="walkRow"><button id="walkBtn" class="glass" hidden></button><button id="autoBtn" class="glass" aria-pressed="false">▶ تجوّل تلقائي</button></div>
   <section id="caption" class="glass" aria-live="polite">
     <div id="capText"><div id="capLevel"></div><div id="capName"></div><div id="capDims"></div></div>
     <a class="waBtn" id="waBtn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg><span>واتساب</span></a>
@@ -602,13 +608,30 @@ function hotTexture(label,up){
 }
 const dirFrom=(yaw,pitch)=>{const y=THREE.MathUtils.degToRad(yaw),p=THREE.MathUtils.degToRad(pitch);
   return new THREE.Vector3(Math.sin(y)*Math.cos(p),Math.sin(p),-Math.cos(y)*Math.cos(p));};
+/* walkable spots: soft rings lying on the floor (stairs keep a small "up/down" marker), no arrows or labels */
+let ringTex=null;
+function floorRingTexture(){if(ringTex)return ringTex;const c=document.createElement('canvas');c.width=c.height=256;const g=c.getContext('2d');
+  g.strokeStyle='rgba(0,0,0,.35)';g.lineWidth=26;g.beginPath();g.arc(128,128,98,0,7);g.stroke();
+  g.strokeStyle='rgba(255,255,255,.97)';g.lineWidth=14;g.beginPath();g.arc(128,128,98,0,7);g.stroke();
+  g.fillStyle='rgba(255,255,255,.30)';g.beginPath();g.arc(128,128,88,0,7);g.fill();
+  ringTex=new THREE.CanvasTexture(c);ringTex.colorSpace=THREE.SRGBColorSpace;return ringTex;}
+const EYE_H=1.5;
 function buildHotspots(p){
   hotGroup.clear();
   (p.links||[]).forEach(l=>{const target=panoById.get(String(l.to));if(!target)return;
-    const up=(l.pitch??-16)>0;
-    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:hotTexture(l.label||target.name,up),depthTest:false,transparent:true}));
-    s.position.copy(dirFrom(l.yaw,l.pitch??-16).multiplyScalar(8));s.scale.set(2.6,1.62,1);s.userData.to=String(l.to);hotGroup.add(s);});
+    const pitch=l.pitch??-16;let o;
+    if(pitch>=-4){o=new THREE.Sprite(new THREE.SpriteMaterial({map:hotTexture(l.label||target.name,pitch>0),depthTest:false,transparent:true}));
+      o.position.copy(dirFrom(l.yaw,pitch).multiplyScalar(8));o.scale.set(2.2,1.37,1);}
+    else{/* a ring on the floor, as far away as the doorway the link points at */
+      const r=Math.min(7,EYE_H/Math.tan(THREE.MathUtils.degToRad(-pitch))),y=THREE.MathUtils.degToRad(l.yaw);
+      o=new THREE.Mesh(new THREE.CircleGeometry(0.6,40),new THREE.MeshBasicMaterial({map:floorRingTexture(),transparent:true,depthTest:false,opacity:.85}));
+      o.rotation.x=-Math.PI/2;o.position.set(Math.sin(y)*r,-EYE_H,-Math.cos(y)*r);}
+    o.renderOrder=2;o.userData={to:String(l.to),yaw:l.yaw,name:l.label||target.name};hotGroup.add(o);});
 }
+/* the doorway you're facing (within 28°) */
+const angDiff=(a,b)=>Math.abs(((a-b)%360+540)%360-180);
+function facing(yaw,maxDiff=28){if(!current||!current.links)return null;let best=null,bd=maxDiff;
+  current.links.forEach(l=>{const t=panoById.get(String(l.to));if(!t)return;const d=angDiff(l.yaw,yaw);if(d<bd){bd=d;best={to:String(l.to),name:t.name};}});return best;}
 
 /* ============ state + navigation ============ */
 const look={yaw:0,pitch:-6,fov:90};let userZoomed=false;
@@ -620,7 +643,7 @@ const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let tween=null,busy=false;
 function tweenLook(to,ms){return new Promise(res=>{if(REDUCED){Object.assign(look,to);return res();}
   let dy=((to.yaw-look.yaw)%360+540)%360-180;tween={from:{yaw:look.yaw,pitch:look.pitch,fov:camera.fov},to:{yaw:look.yaw+dy,pitch:to.pitch,fov:to.fov},t0:performance.now(),ms,res};});}
-let blending=false;
+let blending=false;const visited=new Set();
 function blendTo(tex,newYaw,ms){return new Promise(res=>{const u=panoMat.uniforms;u.map2.value=tex;
   u.off2.value=THREE.MathUtils.degToRad(newYaw-look.yaw);blending=true;const t0=performance.now();
   const step=now=>{const k=Math.min(1,(now-t0)/ms);u.mixv.value=k*k*(3-2*k);
@@ -649,7 +672,7 @@ async function go(id,{instant=false,from=null}={}){
   const newYaw=from==='arrival'?(TOUR.arrival.face??p.yaw??0):back&&back.face!=null?back.face:back&&TOUR.aligned?back.yaw:(p.yaw||0);
   if(smooth){look.fov=normal*0.8;await blendTo(shown,newYaw,420);hotGroup.visible=true;}
   else{panoMat.uniforms.map.value=shown;look.yaw=newYaw;hotGroup.visible=true;}
-  look.pitch=-5;current=p;buildHotspots(p);ui();gyroRebase();
+  look.pitch=-5;current=p;if(started)visited.add(String(p.id));buildHotspots(p);ui();gyroRebase();
   (p.links||[]).forEach(l=>{const t=panoById.get(String(l.to));if(t)preload(t);});
   /* arrive a little zoomed in and settle back to the wide view: feels like stepping in */
   if(!instant&&!REDUCED&&!smooth){camera.fov=look.fov=normal*0.8;camera.updateProjectionMatrix();requestAnimationFrame(()=>{look.fov=normal;});}else look.fov=normal;
@@ -659,7 +682,7 @@ async function go(id,{instant=false,from=null}={}){
 /* ============ input: drag to look, pinch/wheel to zoom, tap a marker to move ============ */
 const ptr=new Map();let down=null,pinch=null;const ray=new THREE.Raycaster(),ndc=new THREE.Vector2();
 const cv=renderer.domElement;
-cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});
+cv.addEventListener('pointerdown',e=>{if(auto.on&&e.isPrimary)stopAuto();cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(ptr.size===1)down={x:e.clientX,y:e.clientY,moved:0,t:performance.now()};
   if(ptr.size===2){const[a,b]=[...ptr.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),fov:look.fov};down=null;}});
 cv.addEventListener('pointermove',e=>{if(!ptr.has(e.pointerId))return;const q=ptr.get(e.pointerId);const dx=e.clientX-q.x,dy=e.clientY-q.y;ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});
@@ -669,7 +692,10 @@ cv.addEventListener('pointermove',e=>{if(!ptr.has(e.pointerId))return;const q=pt
 cv.addEventListener('pointerup',e=>{ptr.delete(e.pointerId);if(ptr.size<2)pinch=null;
   if(down&&down.moved<8&&performance.now()-down.t<450&&started){const rc=cv.getBoundingClientRect();
     ndc.set(((e.clientX-rc.left)/rc.width)*2-1,-((e.clientY-rc.top)/rc.height)*2+1);ray.setFromCamera(ndc,camera);
-    const h=ray.intersectObjects(hotGroup.children,false)[0];if(h)go(h.object.userData.to);}
+    stopAuto();
+    const h=ray.intersectObjects(hotGroup.children,false)[0];
+    if(h)go(h.object.userData.to);
+    else{const d=ray.ray.direction,yaw=THREE.MathUtils.radToDeg(Math.atan2(d.x,-d.z)),t=facing(yaw,40);if(t)go(t.to);}}
   if(ptr.size===0)down=null;});
 cv.addEventListener('pointercancel',e=>{ptr.delete(e.pointerId);down=null;pinch=null;});
 cv.addEventListener('wheel',e=>{e.preventDefault();userZoomed=true;look.fov=Math.min(120,Math.max(40,look.fov*(e.deltaY>0?1.06:0.94)));},{passive:false});
@@ -679,7 +705,7 @@ cv.addEventListener('wheel',e=>{e.preventDefault();userZoomed=true;look.fov=Math
    The buyer can look around while it plays; at the end it blends into the "to" photo. */
 const ARR=TOUR.arrival&&TOUR.arrival.video&&panoById.has(String(TOUR.arrival.to))?TOUR.arrival:null;
 let arrVideo=null,arrTex=null,arrPending=false;
-function stopArrival(){if(!arrVideo)return;arrVideo.onended=null;arrVideo.pause();$('#skipArr').hidden=true;}
+function stopArrival(){if(!arrVideo)return;arrVideo.onended=null;arrVideo.pause();$('#skipArr').hidden=true;$('#autoBtn').hidden=false;}
 function playArrival(){
   if(!ARR)return false;arrPending=false;
   if(!arrVideo){arrVideo=document.createElement('video');Object.assign(arrVideo,{muted:true,playsInline:true,preload:'auto',crossOrigin:'anonymous'});
@@ -689,7 +715,7 @@ function playArrival(){
   const toRoom=()=>{stopArrival();go(ARR.to,{from:'arrival'});};
   arrVideo.onended=toRoom;arrVideo.onerror=()=>{toast('تعذّر تشغيل مشهد الوصول');toRoom();};
   arrVideo.play().then(()=>{panoMat.uniforms.map.value=arrTex;look.yaw=ARR.yaw||0;look.pitch=-3;hotGroup.visible=false;
-    current={id:'__arrival',name:ARR.label||'الطريق إلى البيت',links:[]};ui();$('#skipArr').hidden=false;},()=>toRoom());
+    current={id:'__arrival',name:ARR.label||'الطريق إلى البيت',links:[]};ui();$('#skipArr').hidden=false;$('#autoBtn').hidden=true;},()=>toRoom());
   $('#skipArr').onclick=toRoom;return true;}
 
 /* ============ UI ============ */
@@ -757,7 +783,7 @@ function buildUI(){
   $('#planBtn').hidden=!P;
   $('#wMore').hidden=!(Array.isArray(TLIST)&&TLIST.length>1);$('#wMore').onclick=goList;
 }
-$('#wStart').onclick=()=>{const again=!!started||$('#wStart').dataset.seen;$('#wStart').dataset.seen='1';started=true;$('#welcome').hidden=true;$('#top').hidden=false;$('#dock').hidden=false;ui();
+$('#wStart').onclick=()=>{const again=!!started||$('#wStart').dataset.seen;$('#wStart').dataset.seen='1';started=true;if(current&&current.id!=='__arrival')visited.add(String(current.id));$('#welcome').hidden=true;$('#top').hidden=false;$('#dock').hidden=false;ui();
   /* inside the Claude preview the host doesn't pass motion sensors; sites that embed us with allow="gyroscope" do */
   let embedded=false;try{const ao=location.ancestorOrigins?[...location.ancestorOrigins]:[];embedded=window.self!==window.top&&(ao.some(o=>/claude/.test(o))||/claude/.test(document.referrer)||/claude/.test(location.hostname));}catch(e){}
   gyro.embedded=embedded;$('#gyroBtn').hidden=!('DeviceOrientationEvent' in window&&matchMedia('(pointer:coarse)').matches);
@@ -765,7 +791,7 @@ $('#wStart').onclick=()=>{const again=!!started||$('#wStart').dataset.seen;$('#w
     if(seen==='yes')gyroToggle(); /* already agreed: this tap lets the phone re-allow it without asking */
     else if(seen!=='later'){setTimeout(askMotion,700);if(ARR)arrPending=true;}}
   if(!again&&ARR&&!arrPending)playArrival();
-  if(!again&&!(canMotion()))setTimeout(()=>toast('اسحب للنظر حولك، واضغط على العلامات للتنقل بين الغرف',3800),500);};
+  if(!again&&!(canMotion()))setTimeout(()=>toast('اسحب للنظر حولك. وجّه نظرك لباب واضغط «امشِ»، أو جرّب «تجوّل تلقائي»',4200),500);};
 
 /* plan sheet: true sizes from the plan, dots where a 360° photo exists */
 let planLevel=0,planXf=null;const planCv=$('#planCv'),pctx=planCv.getContext('2d');
@@ -862,6 +888,31 @@ $('#maYes').onclick=()=>{$('#motionAsk').hidden=true;if(arrPending)playArrival()
 $('#maNo').onclick=()=>{$('#motionAsk').hidden=true;if(arrPending)playArrival();try{localStorage.setItem('sb-motion','later');}catch(e){}toast('تقدر تفعّلها بأي وقت من زر الجوال فوق',2600);};
 $('#gyroBtn').onclick=()=>{if(gyro.on||gyro.embedded)return gyroToggle();askMotion();};
 
+/* ============ walking: "امشِ إلى …" for the doorway you face, and an automatic walk-through ============ */
+let walkKey='';
+function updateWalk(){const b=$('#walkBtn');
+  const t=started&&!busy&&!tween&&!blending&&current&&current.id!=='__arrival'&&!auto.on?facing(look.yaw):null;
+  const k=t?t.to:'';if(k===walkKey)return;walkKey=k;
+  if(t){b.textContent='امشِ إلى '+t.name+' ←';b.hidden=false;b.onclick=()=>go(t.to);}else b.hidden=true;}
+const auto={on:false,timer:null};
+function stopAuto(){if(!auto.on)return;auto.on=false;clearTimeout(auto.timer);if(tween&&!busy){const r=tween.res;tween=null;r();}$('#autoBtn').setAttribute('aria-pressed','false');$('#autoBtn').textContent='▶ تجوّل تلقائي';}
+/* path to the nearest room not seen yet, through the links */
+function nextHop(seen){const q=[[String(current.id)]],vis=new Set([String(current.id)]);
+  while(q.length){const path=q.shift(),here=panoById.get(path[path.length-1]);
+    for(const l of here.links||[]){const id=String(l.to);if(vis.has(id)||!panoById.has(id))continue;vis.add(id);
+      const np=path.concat(id);if(!seen.has(id))return np[1];q.push(np);}}
+  return null;}
+function startAuto(){if(!current||!current.links){return;}auto.on=true;$('#autoBtn').setAttribute('aria-pressed','true');$('#autoBtn').textContent='■ إيقاف';
+  const seen=new Set([...visited,String(current.id)]);
+  const step=async()=>{if(!auto.on)return;
+    await tweenLook({yaw:look.yaw+150,pitch:-6,fov:look.fov},REDUCED?10:4200); /* look around the room */
+    if(!auto.on)return;const nxt=nextHop(seen);
+    if(!nxt){stopAuto();toast('انتهت الجولة. تقدر تتجول بنفسك الآن',2600);return;}
+    const l=current.links.find(x=>String(x.to)===nxt);if(l)await tweenLook({yaw:l.yaw,pitch:-6,fov:look.fov},900);
+    if(!auto.on)return;seen.add(nxt);await go(nxt);auto.timer=setTimeout(step,500);};
+  step();}
+$('#autoBtn').onclick=()=>{if(auto.on)stopAuto();else{if(current)visited.add(String(current.id));startAuto();}};
+
 /* ============ frame loop ============ */
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;
   if(!userZoomed){look.fov=fitFov();camera.fov=look.fov;}camera.updateProjectionMatrix();if(!$('#plan').hidden)drawPlan();}
@@ -874,7 +925,7 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last
     if(k>=1){const r=tween.res;tween=null;r();}}
   if(!tween&&Math.abs(camera.fov-look.fov)>0.01){camera.fov+=(look.fov-camera.fov)*Math.min(1,dt*7);camera.updateProjectionMatrix();}
   camera.rotation.set(THREE.MathUtils.degToRad(look.pitch),-THREE.MathUtils.degToRad(look.yaw),0);
-  renderer.render(scene,camera);drawMini();}
+  renderer.render(scene,camera);drawMini();updateWalk();}
 buildUI();
 await go(TOUR.start||TOUR.panos[0].id,{instant:true});
 $('#welcome').hidden=false;$('#loading').hidden=true;

@@ -9,6 +9,9 @@ it ends in, default 1).
 Creates <tours folder>/<id>/ with the photos as 1.jpg, 2.jpg …, tour.json, small previews
 (optimize-photos.py), and adds or updates the listing card in <tours folder>/index.json.
 
+Every new tour is a DRAFT (marked on screen, not on the listings page) until the team approves it:
+    python3 approve-tour.py <tours folder> <id>
+
 Arrows between rooms are not added here: the AI linking step (ai-link, coming) does that. Until then
 buyers move with the room list at the bottom of the page.
 """
@@ -85,7 +88,7 @@ def main(incoming, tours):
     tour = {'name': L['name'], 'location': loc, 'price': L.get('price', 0), 'area': L.get('size'),
             'agent': L['agent'], 'marketers': L.get('marketers', []), 'license': L.get('license', {}),
             'details': {**L.get('details', {}), **({'type': L['type']} if L.get('type') else {})},
-            'pin': L.get('pin'), 'arrival': arrival, 'start': '1', 'linked': False, 'panos': panos}
+            'pin': L.get('pin'), 'arrival': arrival, 'start': '1', 'linked': False, 'draft': True, 'panos': panos}
     tour = {k: v for k, v in tour.items() if v not in (None, {}, [])} | {'panos': panos}
     (out / 'tour.json').write_text(json.dumps(tour, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     optimize.main(out)
@@ -93,7 +96,8 @@ def main(incoming, tours):
     card = {'id': tid, 'name': L['name'], 'type': L.get('type'), 'city': L['city'], 'area': L.get('area'),
             'district': L.get('district'), 'price': L.get('price'), 'bedrooms': L.get('bedrooms'),
             'bathrooms': L.get('bathrooms'), 'size': L.get('size'), 'spots': len(photos),
-            'cover': f'tours/{tid}/{"2" if len(photos) > 1 else "1"}.jpg', 'coverX': 50, 'pin': L.get('pin')}
+            'cover': f'tours/{tid}/{"2" if len(photos) > 1 else "1"}.jpg', 'coverX': 50, 'pin': L.get('pin'),
+            'hidden': True}  # a draft: the link works for checking, but it's not on the listings page until approved
     card = {k: v for k, v in card.items() if v not in (None, '')}
     idx_file = tours / 'index.json'
     idx = json.loads(idx_file.read_text(encoding='utf-8')) if idx_file.exists() else []
